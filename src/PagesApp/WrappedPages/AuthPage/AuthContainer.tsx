@@ -13,7 +13,8 @@ const AuthContainer: FC<Props> =
     ({
          ...props
      }) => {
-
+        const reEmail = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+        const rePassword = /(?=.*\d)(?=.*[a-zA-Z]).{6,}/;
         const [login, setLogin] = useState<string>()
         const [errorLog, setErrorLog] = useState<boolean>(false)
         const [password, setPassword] = useState<string>()
@@ -27,6 +28,9 @@ const AuthContainer: FC<Props> =
                 setErrorMesLog('Login Required')
                 setErrorLog(true)
 
+            } else if (!reEmail.test(value)){
+                setErrorLog(true)
+                setErrorMesLog('Login invalid')
             } else {
                 setErrorMesLog('')
                 setErrorLog(false)
@@ -37,9 +41,10 @@ const AuthContainer: FC<Props> =
             if (value.trim() === '') {
                 setErrorMesPas('Password Required')
                 setErrorPas(true)
-            } else if (value.length < 6){
+            } else if (!rePassword.test(value)){
+                console.log(rePassword.test(value))
                 setErrorPas(true)
-                setErrorMesPas('must be greater than 5')
+                setErrorMesPas('the password must contain one digit, and length must be 6 and more')
 
             } else {
                 setErrorMesPas('')
@@ -68,6 +73,7 @@ const AuthContainer: FC<Props> =
                     placeholder={'Password'}
                     errorMes={errorMesPas}
                     setError={setErrorPas}
+                    type={'password'}
                 />
             </div>)
     }
