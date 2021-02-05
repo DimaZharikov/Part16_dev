@@ -29,7 +29,7 @@ const AuthReducer = (state: stateProps = initialState, action: AuthType): stateP
     return state
 }
 
-const setLoginAC = (isLogin:boolean) => ({type: ActionType.SET_LOGIN, payload: {isLogin}})
+export const setLoginAC = (isLogin:boolean) => ({type: ActionType.SET_LOGIN, payload: {isLogin}})
 
 type SetLoginType = ReturnType<typeof setLoginAC>
 type AuthType = SetLoginType

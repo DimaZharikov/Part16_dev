@@ -1,6 +1,8 @@
 import {FC, useState} from "react";
 import AuthComponent from "./AuthComponent";
 import SuperInputText from "../../../Components/c1-SuperInputText/SuperInputText";
+import {useDispatch} from "react-redux";
+import {setLoginAC} from "../../../Redux/AuthReducer/AuthReducer";
 
 
 interface Props {
@@ -18,13 +20,13 @@ const AuthContainer: FC<Props> =
         const [errorMesLog, setErrorMesLog] = useState<string>('Login Required')
         const [errorMesPas, setErrorMesPas] = useState<string>('Password Required')
         const [errorPas, setErrorPas] = useState<boolean>(false)
-
-
+        const dispatch = useDispatch()
         const validateInputLog = (value:string) => {
             setLogin(value)
             if (value.trim() === '') {
                 setErrorMesLog('Login Required')
                 setErrorLog(true)
+
             } else {
                 setErrorMesLog('')
                 setErrorLog(false)

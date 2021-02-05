@@ -14,8 +14,8 @@ ReactDOM.render(
         <HashRouter>
             <Provider store={store}>
                 <App/>
+                <Routes/>
             </Provider>
-            <Routes/>
         </HashRouter>
     </React.StrictMode>,
     document.getElementById('root')
