@@ -1,0 +1,35 @@
+import thunkMiddleware from 'redux-thunk';
+import { combineReducers, createStore, applyMiddleware} from "redux";
+import AuthReducer from "./AuthReducer/AuthReducer";
+import NewPassReducer from "./NewPassReducer/NewPassReducer";
+import ErrorReducer from "./ErrorReducer/ErrorReducer";
+import ProfileReducer from "./ProfileReducer/ProfileReducer";
+import  RegistrationReducer from "./RegistrationReducer/RegistartionReducer";
+import ResPasswordReducer from "./ResPassReducer/ResPasswordReducer";
+
+
+
+
+const reducer = combineReducers({
+    auth: AuthReducer,
+    newPas: NewPassReducer,
+    error: ErrorReducer,
+    profile: ProfileReducer,
+    registration:  RegistrationReducer,
+    resPas: ResPasswordReducer
+})
+
+
+
+
+
+export const store = createStore(reducer, applyMiddleware(thunkMiddleware));
+
+
+
+export type AppRootStateType = ReturnType<typeof reducer>
+
+export default store
+
+//@ts-ignore
+window.store = store;
