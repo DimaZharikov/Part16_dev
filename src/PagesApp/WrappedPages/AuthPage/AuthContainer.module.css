@@ -1,0 +1,15 @@
+.auth_wrapper {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.auth_main h3 {
+    text-align: center;
+}
+
+.auth_main {
+    max-width: 500px;
+}

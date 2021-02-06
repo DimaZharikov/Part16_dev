@@ -44,7 +44,7 @@ const SuperInputText: React.FC<SuperInputTextPropsType> = (
     }
     const [ErrorBlur, setErrorBlur] = useState<boolean>(false)
     const finalSpanClassName = `${s.error} ${spanClassName ? spanClassName : ""}`;
-    const finalInputClassName = `${ErrorBlur && error ? s.errorInput : className ? className : s.superInput}`; // need to fix with (?:) and s.superInput
+    const finalInputClassName = `${s.superInput} ${ErrorBlur && error ? s.errorInput : className ? s[className] : ''}`; // need to fix with (?:) and s.superInput
 
     const onBlurHandler = (e:React.FocusEvent<HTMLInputElement>) => {
         if (error) {
