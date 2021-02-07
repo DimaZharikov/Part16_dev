@@ -4,9 +4,7 @@ import {NavLink} from "react-router-dom";
 import {RoutingType} from "../../../Routes/Routes";
 
 
-const NavigationContainer : FC = ({
-
-}) => {
+const NavigationContainer: FC = ({}) => {
 
     return (<Fragment>
         <div>

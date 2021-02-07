@@ -1,16 +1,14 @@
 import {FC} from "react";
-import ErrorComponent from "./ErrorComponent";
+import Error404 from "./Error404";
 
 
 interface Props {
 
 }
 
-const ErrorContainer: FC<Props> = ({
-                                         ...props
-                                   }) => {
+const ErrorContainer: FC<Props> = () => {
     return (<div>
-        <ErrorComponent title = {'Error page 404'}/>
+        <Error404/>
     </div>)
 }
 

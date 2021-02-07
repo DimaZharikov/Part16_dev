@@ -12,7 +12,7 @@ type DefaultSpanPropsType = DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, H
 type SuperEditableSpanType = DefaultInputPropsType & { // и + ещё пропсы которых нет в стандартном инпуте
     onChangeText?: (value: string) => void
     onEnter?: () => void
-    error?: string
+
     spanClassName?: string
 
     spanProps?: DefaultSpanPropsType // пропсы для спана
