@@ -1,6 +1,7 @@
 import {ApiAuth} from "../../API/Api";
 import {setProfileAc} from "../ProfileReducer/ProfileReducer";
 import {AppThunk} from "../Store";
+import {setInitialApp} from "../AppReducer/AppReducer";
 
 export type RequestStatusType = 'loading' | 'succeeded' | 'failed'
 
@@ -75,6 +76,29 @@ export const setLogOut = (): AppThunk => (dispatch) => {
             console.log(error)
             console.log('Error:', {...e})
             dispatch(setStatusAC('failed'))
+        })
+}
+
+export const setAuthMe = (): AppThunk => (dispatch) => {
+    dispatch(setStatusAC('loading'))
+    ApiAuth.authMe()
+        .then(res => {
+
+            dispatch(setProfileAc(res.data))
+            dispatch(setLoginAC(true))
+            dispatch(setStatusAC('succeeded'))
+        })
+        .catch(e => {
+            const error = e.response
+                ? e.response.data.error
+                : (e.message + ', more details in the console');
+            console.log(error)
+            console.log('Error:', {...e})
+            dispatch(setLoginAC(false))
+        })
+        .finally(() => {
+            dispatch(setInitialApp(true))
+            dispatch(setStatusAC('succeeded'))
         })
 }
 

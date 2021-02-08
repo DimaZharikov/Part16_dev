@@ -6,6 +6,7 @@ import ErrorReducer from "./ErrorReducer/ErrorReducer";
 import ProfileReducer, { ActionProfileType } from "./ProfileReducer/ProfileReducer";
 import  RegistrationReducer from "./RegistrationReducer/RegistartionReducer";
 import ResPasswordReducer from "./ResPassReducer/ResPasswordReducer";
+import {AppReducer, AppType } from './AppReducer/AppReducer';
 
 
 
@@ -16,7 +17,8 @@ const reducer = combineReducers({
     error: ErrorReducer,
     profile: ProfileReducer,
     registration:  RegistrationReducer,
-    resPas: ResPasswordReducer
+    resPas: ResPasswordReducer,
+    app: AppReducer
 })
 
 
@@ -28,7 +30,7 @@ export const store = createStore(reducer, applyMiddleware(thunkMiddleware));
 
 
 export type AppRootStateType = ReturnType<typeof reducer>
-export type AppActionType = AuthType | ActionProfileType
+export type AppActionType = AuthType | ActionProfileType | AppType
 
 export type AppThunk<ReturnType = void> = ThunkAction<
     ReturnType,

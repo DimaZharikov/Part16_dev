@@ -5,9 +5,10 @@ import SuperCheckbox from "../../../Components/c3-SuperCheckbox/SuperCheckbox";
 import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
 import style from './AuthContainer.module.css'
 import {AppRootStateType} from "../../../Redux/Store";
-import {Redirect} from "react-router-dom";
+import {Redirect, NavLink} from "react-router-dom";
 import {setLoginT} from "../../../Redux/AuthReducer/AuthReducer";
 import Spinner from "../../../Common/preloader/Spinner";
+import {RoutingType} from "../../../Routes/Routes";
 
 interface Props {
 
@@ -25,8 +26,8 @@ const AuthContainer: FC<Props> = () => {
     const [check, setCheck] = useState<boolean>(false)
     const isLogin = useSelector((state: AppRootStateType) => state.auth.isLogin)
     const status = useSelector((state: AppRootStateType) => state.auth.status)
-
-
+    const profile = useSelector((state: AppRootStateType) => state.profile.profile)
+    console.log(profile)
     const dispatch = useDispatch()
     const validateInputLog = (value: string) => {
         setEmail(value)
@@ -82,42 +83,51 @@ const AuthContainer: FC<Props> = () => {
 
 
     return (
-        <div className={style.auth_main}>
-            <h3>Login</h3>
-            <div className={style.auth_wrapper}>
-                <SuperInputText
-                    value={email}
-                    onChangeText={validateInputLog}
-                    error={errorLog}
-                    placeholder={'E-mail'}
-                    errorMes={errorMesLog}
-                    setError={setErrorLog}
-                    className={'otherInput'}
+        <div className={style.container}>
+            <div className={style.auth_main}>
+                <h3>Login</h3>
+                <div className={style.auth_wrapper}>
+                    <div className={style.input_block}>
+                        <SuperInputText
+                            value={email}
+                            onChangeText={validateInputLog}
+                            error={errorLog}
+                            placeholder={'E-mail'}
+                            errorMes={errorMesLog}
+                            setError={setErrorLog}
+                            className={'otherInput'}
 
-                />
-                <SuperInputText
-                    value={password}
-                    onChangeText={validateInputPas}
-                    error={errorPas}
-                    placeholder={'Password'}
-                    errorMes={errorMesPas}
-                    setError={setErrorPas}
-                    type={'password'}
-                    className={'otherInput'}
-                />
-                <div>
-                    <SuperCheckbox
-                        onChangeChecked={setCheck}
-                    />
-                    <SuperButton
-                        onClick={logHandler}
-                    >
-                        Login
-                    </SuperButton>
+                        />
+                        <SuperInputText
+                            value={password}
+                            onChangeText={validateInputPas}
+                            error={errorPas}
+                            placeholder={'Password'}
+                            errorMes={errorMesPas}
+                            setError={setErrorPas}
+                            type={'password'}
+                            className={'otherInput'}
+                        />
+                        <div className={style.auth_link}>
+                            <span><NavLink to={RoutingType.newPass}>Registration</NavLink></span>
+                            <span><NavLink to={RoutingType.resPass}>Forgot Pas?</NavLink></span>
+                        </div>
+                    </div>
+                    <div className={style.btn_check}>
+                        <SuperCheckbox
+                            onChangeChecked={setCheck}
+                        > Remember </SuperCheckbox>
+                        <SuperButton
+                            onClick={logHandler}
+                        >
+                            Login
+                        </SuperButton>
+                    </div>
                 </div>
-            </div>
 
-        </div>)
+            </div>
+        </div>
+    )
 }
 
 

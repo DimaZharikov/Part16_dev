@@ -4,7 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {HashRouter} from "react-router-dom";
-import Routes from "./Routes/Routes";
 import {Provider} from "react-redux";
 import store from "./Redux/Store";
 
@@ -14,7 +13,6 @@ ReactDOM.render(
         <HashRouter>
             <Provider store={store}>
                 <App/>
-                <Routes/>
             </Provider>
         </HashRouter>
     </React.StrictMode>,
