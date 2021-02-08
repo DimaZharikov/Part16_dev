@@ -71,15 +71,7 @@ const AuthContainer: FC<Props> = () => {
     if (isLogin) {
         return <Redirect to={'/profile'}/>
     }
-    if (status === "loading") {
-        return <Spinner/>
-    } else if (status === "failed") {
-        return (
-            <div>
-                <h1>something wrong</h1>
-            </div>
-        )
-    }
+
 
 
     return (
@@ -119,12 +111,20 @@ const AuthContainer: FC<Props> = () => {
                         > Remember </SuperCheckbox>
                         <SuperButton
                             onClick={logHandler}
+                            disabled={status === 'loading'}
                         >
                             Login
                         </SuperButton>
                     </div>
                 </div>
-
+                {
+                    status === 'loading'
+                        ? <Spinner/>
+                        : status === 'failed'
+                        ? <div>
+                        <h1>something wrong</h1></div>
+                        : ''
+                }
             </div>
         </div>
     )
