@@ -133,7 +133,7 @@ const RegistrationContainer: FC<Props> = ({
 
 
     return (<div>
-        <h1>Registration Page</h1>
+        <h1>Registration</h1>
         <div>
             {/*Email*/}
             <h2>E-mail:</h2>
