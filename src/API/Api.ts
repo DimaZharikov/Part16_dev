@@ -29,7 +29,7 @@ export type ResponseTypeLogOut = {
 }
 
 export type ResponseTypeRegistration = {
-    login: string,
+    email: string,
     password: string,
     error: string | undefined
 }

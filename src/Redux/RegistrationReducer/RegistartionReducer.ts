@@ -1,24 +1,37 @@
+import { ThunkDispatch } from "redux-thunk";
+import {RequestStatusType} from "../AuthReducer/AuthReducer";
+import {AppRootStateType} from "../Store";
+import {ApiRegistration, ResponseTypeRegistration} from "../../API/Api";
+
+
+
+
+
 export interface stateProps {
-    email: string,
-    password: string,
-    error?: string | undefined
+    isRegistration: boolean,
+    status: RequestStatusType;
+    data: ResponseTypeRegistration
 
 }
 
 
 const initialState: stateProps = {
-    email: '',
-    password: '',
-    error: undefined
-
-
+    isRegistration: false,
+    status: "succeeded",
+    data : {
+        email: '',
+        password: '',
+        error: undefined
+    }
 }
 
 
 //Type
 export enum ActionType {
-    SET_EMAIL = 'REGISTRATION_COMPONENT/SET_EMAIL',
-    SET_PASSWORD = 'REGISTRATION_COMPONENT/SET_PASSWORD'
+    SET_IS_REGISTRATION = "REGISTRATION_CONTAINER/SET_IS_REGISTRATION",
+    SET_STATUS = "REGISTRATION_CONTAINER/SET_STATUS",
+    SET_DATA = "REGISTRATION_CONTAINER/SET_DATA",
+
 }
 
 
@@ -32,37 +45,74 @@ interface Action<T> {
 
 
 // ActionCreate
-export const setEmail = (valueEmail: string): Action<string> => ({
-    type: ActionType.SET_EMAIL,
-    payload: valueEmail
+export const setRegistration = (isRegistration: boolean): Action<boolean> => ({
+    type: ActionType.SET_IS_REGISTRATION,
+    payload: isRegistration
+});
+
+
+export const setStatus = (status : RequestStatusType): Action<RequestStatusType> => ({
+    type: ActionType.SET_STATUS,
+    payload: status
+});
+
+export const setData = (data: {
+    email: string, password: string, error?: string | undefined
+}): Action<{ email: string; password: string; error?: string | undefined }> => ({
+    type: ActionType.SET_DATA,
+    payload: data
 })
 
 
-export const SetPassword = (valuePassword : string): Action<string> => ({
-    type: ActionType.SET_PASSWORD,
-    payload: valuePassword
-})
 
 //Thunk
+export const putData = (email: string, password: string, error?: string | undefined) =>
+    (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>) => {
+    dispatch(setStatus('loading'))
+        ApiRegistration.register(email, password, error)
+            .then (res => {
+                dispatch(setData(res.data))
+                dispatch(setStatus("succeeded"))
+                setRegistration(false)
+            })
+            .catch(e => {
+                const error = e.response
+                ? e.response.data.error
+                    : (e.response.data.error + 'check console')
+                console.log(error)
+                console.log('errors:', {...e})
+                dispatch(setStatus("failed"))
+            })
+    }
 
 
 
 
 
-const RegistrationReducer = (state: stateProps = initialState, action: Action<string>): stateProps => {
+
+const RegistrationReducer = (state: stateProps = initialState, action: Action<boolean & RequestStatusType>): stateProps => {
     switch (action.type) {
-        //values from UI for push Email
-        case ActionType.SET_EMAIL:
+        //initial Data
+        case ActionType.SET_DATA:
+            return {...state, data: action.payload}
+        //values from UI for push Email and password if VALID
+        case ActionType.SET_IS_REGISTRATION:
             return {
-                ...state, email: action.payload
+                ...state, isRegistration: action.payload
             };
             //values from UI for push Password
-        case ActionType.SET_PASSWORD:
+        case ActionType.SET_STATUS:
             return {
-                ...state, password: action.payload
+                ...state, status: action.payload
             };
     }
     return state
 }
+
+
+//types
+type TypeActions = ReturnType<typeof setData> |
+    ReturnType<typeof setRegistration> |
+    ReturnType<typeof setStatus>
 
 export default RegistrationReducer
