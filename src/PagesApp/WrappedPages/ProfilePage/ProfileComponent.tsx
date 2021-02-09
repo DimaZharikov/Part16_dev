@@ -6,11 +6,12 @@ interface Props {
 
 
 const ProfileComponent: FC<Props> = ({
-                                         title,  ...props
+                                         title
                                      }) => {
-    return (<div>
-        <h1>{title}</h1>
-    </div>)
+    return (
+        <div>
+            <h1>{title}</h1>
+        </div>)
 }
 
 

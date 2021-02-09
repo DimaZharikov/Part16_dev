@@ -40,6 +40,9 @@ export const ApiAuth = {
     },
     logOut() {
         return axiosInstance.delete<ResponseTypeLogOut>('/auth/me')
+    },
+    authMe() {
+        return axiosInstance.post<ResponseTypeProfile>('/auth/me')
     }
 }
 

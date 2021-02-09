@@ -23,7 +23,7 @@ export enum RoutingType {
 const Routes : FC = () => {
     return (<div>
             <Switch>
-                <Route path={"/"} exact render={() => <Redirect to={RoutingType.auth}/>}/>
+                <Route path={"/"} exact render={() => <Redirect to={RoutingType.profile}/>}/>
                 <Route exact path={RoutingType.auth} render={()=> <AuthContainer/>}/>
                 <Route exact path = {RoutingType.registration} render ={()=> <RegistrationContainer/>}/>
                 <Route exact path = {RoutingType.profile} render = {()=><ProfileContainer/>}/>

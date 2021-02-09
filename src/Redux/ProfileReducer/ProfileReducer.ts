@@ -14,7 +14,8 @@ const initialState = {
 
 //Type
 export enum ActionType {
-    SET_PROFILE = 'PROFILE/SET_PROFILE'
+    SET_PROFILE = 'PROFILE/SET_PROFILE',
+    CLEAN_PROFILE = 'PROFILE/CLEAN_PROFILE'
 }
 
 
@@ -37,16 +38,21 @@ const ProfileReducer = (state: stateProps  = initialState, action: ActionProfile
 
         case ActionType.SET_PROFILE:
             return {...state, profile: {...action.payload}}
+        case ActionType.CLEAN_PROFILE:
+            return {...state, profile: undefined}
         default: return  state
     }
 
 }
 
-export const setProfileAc = (profile: ResponseTypeProfile) => {
-    return {type: ActionType.SET_PROFILE, payload: profile}
+export const setProfileAc = (profile: ResponseTypeProfile ) => {
+    return {type: ActionType.SET_PROFILE, payload: profile} as const
+}
+export const cleanProfile = () => {
+    return {type:ActionType.CLEAN_PROFILE} as const
 }
 
-export type ActionProfileType = ReturnType<typeof setProfileAc>
+export type ActionProfileType = ReturnType<typeof setProfileAc> | ReturnType<typeof cleanProfile>
 
 
 export default ProfileReducer
