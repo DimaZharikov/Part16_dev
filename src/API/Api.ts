@@ -2,10 +2,10 @@ import axios from "axios";
 
 const configOMB = {
     // localBack
-    baseURL:"http://localhost:7542/2.0/",
+    baseURL: "http://localhost:7542/2.0/",
     // heroku
     // baseURL:'https://neko-back.herokuapp.com/2.0',
-    withCredentials:true,
+    withCredentials: true,
 };
 
 const axiosInstance = axios.create(configOMB);
@@ -28,6 +28,12 @@ export type ResponseTypeLogOut = {
     error: string;
 }
 
+export type ResponseTypeRegistration = {
+    email: string,
+    password: string,
+    error?: string | undefined
+}
+
 export const ApiAuth = {
     login(email: string, password: string, rememberMe: boolean) {
         return axiosInstance.post<ResponseTypeProfile>('/auth/login', {email, password, rememberMe})
@@ -37,5 +43,12 @@ export const ApiAuth = {
     },
     authMe() {
         return axiosInstance.post<ResponseTypeProfile>('/auth/me')
+    }
+}
+
+
+export const ApiRegistration = {
+    register(email: string, password: string) {
+        return axiosInstance.post <ResponseTypeRegistration>('auth/register', {email, password})
     }
 }

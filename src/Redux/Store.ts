@@ -7,7 +7,7 @@ import ProfileReducer, { ActionProfileType } from "./ProfileReducer/ProfileReduc
 import  RegistrationReducer from "./RegistrationReducer/RegistartionReducer";
 import ResPasswordReducer from "./ResPassReducer/ResPasswordReducer";
 import {AppReducer, AppType } from './AppReducer/AppReducer';
-
+import {composeWithDevTools} from 'redux-devtools-extension'
 
 
 
@@ -23,9 +23,11 @@ const reducer = combineReducers({
 
 
 
+const middleware = applyMiddleware(thunkMiddleware)
+
+export const store = createStore(reducer, composeWithDevTools(middleware));
 
 
-export const store = createStore(reducer, applyMiddleware(thunkMiddleware));
 
 
 
