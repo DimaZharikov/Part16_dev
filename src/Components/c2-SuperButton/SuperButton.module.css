@@ -39,3 +39,7 @@
 .button_default:active {
     background: rgb(112, 112, 112);
 }
+
+.button_default:disabled {
+    opacity: .3;
+}
