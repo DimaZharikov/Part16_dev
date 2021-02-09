@@ -101,7 +101,7 @@ const AuthContainer: FC<Props> = () => {
                             className={'otherInput'}
                         />
                         <div className={style.auth_link}>
-                            <span><NavLink to={RoutingType.newPass}>Registration</NavLink></span>
+                            <span><NavLink to={RoutingType.registration}>Registration</NavLink></span>
                             <span><NavLink to={RoutingType.resPass}>Forgot Pas?</NavLink></span>
                         </div>
                     </div>
