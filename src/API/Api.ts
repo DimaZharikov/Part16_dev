@@ -20,12 +20,17 @@ export type ResponseTypeProfile = {
     isAdmin: boolean;
     verified: boolean; // подтвердил ли почту
     rememberMe: boolean;
-    error?: string;
 }
 
 export type ResponseTypeLogOut = {
     info: string
     error: string;
+}
+
+export type ResponseTypeRegistration = {
+    email: string,
+    password: string,
+    error?: string | undefined
 }
 
 export const ApiAuth = {
@@ -37,5 +42,15 @@ export const ApiAuth = {
     },
     authMe() {
         return axiosInstance.post<ResponseTypeProfile>('/auth/me')
+    },
+    changeName(name:string) {
+        return axiosInstance.put<{ updatedUser: ResponseTypeProfile }>('/auth/me', {name: name})
+    }
+}
+
+
+export const ApiRegistration = {
+    register(email: string, password: string) {
+        return axiosInstance.post <ResponseTypeRegistration>('auth/register', {email, password})
     }
 }

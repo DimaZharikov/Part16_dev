@@ -32,12 +32,12 @@ const AuthContainer: FC<Props> = () => {
     const validateInputLog = (value: string) => {
         setEmail(value)
         if (value.trim() === '') {
-            setErrorMesLog('Login Required')
+            setErrorMesLog('Email Required')
             setErrorLog(true)
 
         } else if (!reEmail.test(value)) {
             setErrorLog(true)
-            setErrorMesLog('Login invalid')
+            setErrorMesLog('Email invalid')
         } else {
             setErrorMesLog('')
             setErrorLog(false)
