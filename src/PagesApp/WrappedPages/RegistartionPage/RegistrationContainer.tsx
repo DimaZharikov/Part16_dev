@@ -6,9 +6,9 @@ import {Redirect} from "react-router-dom";
 import {RoutingType} from "../../../Routes/Routes";
 import Spinner from "../../../Common/preloader/Spinner";
 import SuperInputText from "../../../Components/c1-SuperInputText/SuperInputText";
+import {dataProps, putData} from "../../../Redux/RegistrationReducer/RegistartionReducer";
 import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
-import {ResponseTypeRegistration} from "../../../API/Api";
-import {putData} from "../../../Redux/RegistrationReducer/RegistartionReducer";
+
 
 
 interface Props {
@@ -21,7 +21,7 @@ const RegistrationContainer: FC<Props> = ({
     //reducer variable
     const isRegistration = useSelector<AppRootStateType, boolean>(state => state.registration.isRegistration);
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.registration.status);
-    const data = useSelector<AppRootStateType, ResponseTypeRegistration>(state => state.registration.data)
+    const data = useSelector<AppRootStateType, dataProps>( state => state.registration.data)
     const dispatch = useDispatch()
 
 
@@ -32,7 +32,7 @@ const RegistrationContainer: FC<Props> = ({
 
     //values of Email, Password, Confirm Password
     const [email, setEmail] = useState<string>(data.email)
-    const [password, setPassword] = useState<string>(data.password)
+    const [password, setPassword] = useState<string>()
     const [confirmPassword, setConfirmPassword] = useState<string>()
 
 
@@ -48,7 +48,7 @@ const RegistrationContainer: FC<Props> = ({
     const [errorConfirmPassword, setErrorConfirmPassword] = useState<string>('passwords must match')
 
     // Disabled btn for Reg. if email & password & confirmPassword  is Valid => false
-    const [isDisabledBtn, setIsDisabledBtn] = useState<boolean>(true)
+
 
 
     //validate for Email
@@ -57,27 +57,31 @@ const RegistrationContainer: FC<Props> = ({
         if (value.trim() === '') {
             setErrorEmail('Email is Required')
             setIsValidEmail(true)
+
         } else
             // if value inValid of reEmail
         if (!reEmail.test(value)) {
             setErrorEmail('Invalid Email')
             setIsValidEmail(true)
+
         } else {
             // else value email valid of reEmail
             setErrorEmail('')
             setIsValidEmail(false)
+
         }
     }
     //validate for Password
     const validatePassword = (value: string) => {
         setPassword(value)
-        if (value.trim() === '' && value.length > 6) {
+        if (value.trim() === '' && value.length > 8) {
 
             setIsValidPassword(true)
             setErrorPassword('Password area is Required')
+
         } else if (!rePassword.test(value)) {
             setIsValidPassword(true)
-            setErrorPassword('the password must contain one digit, and length must be 6 and more')
+            setErrorPassword('the password must contain one digit, and length must be 8 and more')
         } else {
             setIsValidPassword(false)
             setErrorPassword('')
@@ -95,14 +99,17 @@ const RegistrationContainer: FC<Props> = ({
         } else {
             setIsValidConfirmPassword(false)
             setErrorConfirmPassword('')
+
+
         }
     }
+
 
 
     //if validate false and email area is valid => registration , btnDisabled - false
     const onRegistrationHandler = () => {
         if (email && password && confirmPassword) {
-            dispatch(putData(data.email, data.password))
+            dispatch(putData(email, password))
 
         }
     }
@@ -117,10 +124,12 @@ const RegistrationContainer: FC<Props> = ({
     } else if (status === "failed") {
         return (
             <div>
-                <h1>Check year type</h1>
+                <h1>{data.error}</h1>
             </div>
         )
     }
+
+
 
 
     return (<div>
@@ -167,7 +176,6 @@ const RegistrationContainer: FC<Props> = ({
         <div>
             <SuperButton
                 onClick={onRegistrationHandler}
-
             >
                 Registration
             </SuperButton>
@@ -177,4 +185,3 @@ const RegistrationContainer: FC<Props> = ({
 }
 
 export default RegistrationContainer
-

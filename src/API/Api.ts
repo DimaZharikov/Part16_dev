@@ -31,7 +31,7 @@ export type ResponseTypeLogOut = {
 export type ResponseTypeRegistration = {
     email: string,
     password: string,
-    error: string | undefined
+    error?: string | undefined
 }
 
 export const ApiAuth = {
@@ -45,7 +45,7 @@ export const ApiAuth = {
 
 
 export const ApiRegistration = {
-    register(email: string, password: string, error?: string) {
-        return axiosInstance.post <ResponseTypeRegistration>('auth/register', {email, password, error})
+    register(email: string, password: string) {
+        return axiosInstance.post <ResponseTypeRegistration>('auth/register', {email, password})
     }
 }
