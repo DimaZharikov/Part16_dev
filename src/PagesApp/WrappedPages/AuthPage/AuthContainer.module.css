@@ -41,3 +41,8 @@
 .btn_check span {
     font-size: 13px;
 }
+
+.errorMesOp {
+    font-size: 14px;
+    color: red;
+}

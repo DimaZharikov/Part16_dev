@@ -6,7 +6,7 @@ import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
 import style from './AuthContainer.module.css'
 import {AppRootStateType} from "../../../Redux/Store";
 import {Redirect, NavLink} from "react-router-dom";
-import {setLoginT} from "../../../Redux/AuthReducer/AuthReducer";
+import {setErrorMes, setLoginT} from "../../../Redux/AuthReducer/AuthReducer";
 import Spinner from "../../../Common/preloader/Spinner";
 import {RoutingType} from "../../../Routes/Routes";
 
@@ -26,8 +26,8 @@ const AuthContainer: FC<Props> = () => {
     const [check, setCheck] = useState<boolean>(false)
     const isLogin = useSelector((state: AppRootStateType) => state.auth.isLogin)
     const status = useSelector((state: AppRootStateType) => state.auth.status)
-    const profile = useSelector((state: AppRootStateType) => state.profile.profile)
-    console.log(profile)
+    const errordata = useSelector((state: AppRootStateType) => state.auth.errorMes)
+    console.log(errordata)
     const dispatch = useDispatch()
     const validateInputLog = (value: string) => {
         setEmail(value)
@@ -64,6 +64,8 @@ const AuthContainer: FC<Props> = () => {
 
         if (email && password) {
             dispatch(setLoginT(email, password, check))
+        } else {
+            dispatch(setErrorMes('Password and Email Required'))
         }
 
     }
@@ -122,8 +124,12 @@ const AuthContainer: FC<Props> = () => {
                         ? <Spinner/>
                         : status === 'failed'
                         ? <div>
-                        <h1>something wrong</h1></div>
+                        <h1>{errordata}</h1></div>
                         : ''
+
+                }
+                {
+                    !!errordata ? <h5 className={style.errorMesOp}> {errordata}</h5> : ''
                 }
             </div>
         </div>
