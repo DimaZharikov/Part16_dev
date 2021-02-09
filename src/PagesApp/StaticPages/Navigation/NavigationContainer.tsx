@@ -14,7 +14,7 @@ const NavigationContainer: FC = () => {
                 activeClassName={style.active}
             >Auth</NavLink>
             <NavLink
-                to={RoutingType.newPass}
+                to={RoutingType.registration}
                 activeClassName={style.active}
             >Registration</NavLink>
             <NavLink

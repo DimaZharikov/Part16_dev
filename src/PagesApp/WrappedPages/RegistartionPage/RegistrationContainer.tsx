@@ -8,7 +8,8 @@ import Spinner from "../../../Common/preloader/Spinner";
 import SuperInputText from "../../../Components/c1-SuperInputText/SuperInputText";
 import {dataProps, putData} from "../../../Redux/RegistrationReducer/RegistartionReducer";
 import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
-
+import style from './Registration.module.scss'
+import {Paper} from "@material-ui/core";
 
 
 interface Props {
@@ -47,7 +48,6 @@ const RegistrationContainer: FC<Props> = ({
     const [errorPassword, setErrorPassword] = useState<string>('Password must be with number and A-Z, a-z letters, length must be 6 and more')
     const [errorConfirmPassword, setErrorConfirmPassword] = useState<string>('passwords must match')
 
-    // Disabled btn for Reg. if email & password & confirmPassword  is Valid => false
 
 
 
@@ -114,72 +114,92 @@ const RegistrationContainer: FC<Props> = ({
         }
     }
 
+
     // reducer registration changed on True if all input valid
     if (isRegistration) {
         return <Redirect to={RoutingType.auth}/>
     }
 
-    if (status === "loading") {
-        return <Spinner/>
-    } else if (status === "failed") {
-        return (
-            <div>
-                <h1>{data.error}</h1>
-            </div>
-        )
-    }
 
 
 
 
-    return (<div>
+
+    return (<div className={style.container}>
         <h1>Registration</h1>
-        <div>
+        <Paper className={style.reg_wrapper}>
             {/*Email*/}
             <h2>E-mail:</h2>
-            <SuperInputText
-                value={email}
-                onChangeText={isValidateEmailReg}
-                error={isValidEmail}
-                placeholder={'E-mail'}
-                errorMes={errorEmail}
-                setError={setIsValidEmail}
-                className={'otherInput'}
-            />
+            <Paper>
+                <SuperInputText
+                    value={email}
+                    onChangeText={isValidateEmailReg}
+                    error={isValidEmail}
+                    placeholder={'E-mail'}
+                    errorMes={errorEmail}
+                    setError={setIsValidEmail}
+                    className={'otherInput'}
+
+                />
+            </Paper>
+
 
             {/*password*/}
-            <h2>Password:</h2>
-            <SuperInputText
-                value={password}
-                onChangeText={validatePassword}
-                error={isValidPassword}
-                placeholder={'Password'}
-                errorMes={errorPassword}
-                setError={setIsValidPassword}
-                className={'otherInput'}
-                type={'password'}
-            />
+
+                <h2>Password:</h2>
+            <Paper>
+                <SuperInputText
+                    value={password}
+                    onChangeText={validatePassword}
+                    error={isValidPassword}
+                    placeholder={'Password'}
+                    errorMes={errorPassword}
+                    setError={setIsValidPassword}
+                    className={'otherInput'}
+                    type={password}
+                />
+            </Paper>
+
+
+
+
 
             {/*confirm password*/}
             <h2>Confirm Password:</h2>
-            <SuperInputText
-                value={confirmPassword}
-                onChangeText={validateConfirmPassword}
-                error={isValidConfirmPassword}
-                placeholder={'Confirm Password'}
-                errorMes={errorConfirmPassword}
-                setError={setIsValidPassword}
-                className={'otherInput'}
-                type={'password'}
-            />
-        </div>
+            <Paper>
+                <SuperInputText
+                    value={confirmPassword}
+                    onChangeText={validateConfirmPassword}
+                    error={isValidConfirmPassword}
+                    placeholder={'Confirm Password'}
+                    errorMes={errorConfirmPassword}
+                    setError={setIsValidPassword}
+                    className={'otherInput'}
+                    type={'password'}
+                />
+            </Paper>
+
+        </Paper>
         <div>
             <SuperButton
                 onClick={onRegistrationHandler}
+                disabled={status === 'loading'}
+                className={style.btn}
             >
                 Registration
             </SuperButton>
         </div>
+
+    <div>
+        {
+            status === 'loading'
+                ? <Spinner/>
+                : status === 'failed'
+                ? <div>
+                    <h1>{data.error}</h1></div>
+                : ''
+        }
+    </div>
 
     </div>)
 }
