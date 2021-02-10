@@ -1,8 +1,10 @@
 import axios from "axios";
 
+
+//first deploy at 10.02.21
 const configOMB = {
     // localBack
-    // baseURL: "http://localhost:7542/2.0/",
+    //baseURL: "http://localhost:7542/2.0/",
     // heroku
     baseURL:'https://neko-back.herokuapp.com/2.0',
     withCredentials: true,
