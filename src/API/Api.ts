@@ -20,7 +20,7 @@ export type ResponseTypeProfile = {
     isAdmin: boolean;
     verified: boolean; // подтвердил ли почту
     rememberMe: boolean;
-    token:string
+    token: string
 }
 
 export type ResponseTypeLogOut = {
@@ -35,12 +35,20 @@ export type ResponseTypeRegistration = {
 }
 
 export const ApiAuth = {
-    login(email: string, password: string, rememberMe: boolean) {
-        return axiosInstance.post<ResponseTypeProfile>('/auth/login', {email, password, rememberMe})
-    },
-    logOut() {
-        return axiosInstance.delete<ResponseTypeLogOut>('/auth/me')
-    },
+        login(email: string, password: string, rememberMe: boolean) {
+            return axiosInstance.post<ResponseTypeProfile>('/auth/login', {email, password, rememberMe})
+        },
+        logOut() {
+            return axiosInstance.delete<ResponseTypeLogOut>('/auth/me')
+        },
+        recovery(email: string) {
+            return axiosInstance.post('/auth/forgot', {
+                email, message: `<div style="background-color: lime; padding: 15px">	
+	password recovery link: 
+	<a href='http://localhost:3000/#/resPassword/$token$'>
+	link</a></div>`
+            })
+        },
     authMe() {
         return axiosInstance.post<ResponseTypeProfile>('/auth/me')
     },
@@ -51,7 +59,9 @@ export const ApiAuth = {
         return axiosInstance.post('/auth/set-new-password', {password:password,
             resetPasswordToken:token})
     }
-}
+
+
+    }
 
 
 export const ApiRegistration = {
