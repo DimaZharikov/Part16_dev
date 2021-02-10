@@ -94,6 +94,7 @@ export const setAuthMe = (): AppThunk => (dispatch) => {
     dispatch(setStatusAC('loading'))
     ApiAuth.authMe()
         .then(res => {
+            console.log(res)
             dispatch(setErrorMes(''))
             dispatch(setProfileAc(res.data))
             dispatch(setLoginAC(true))
@@ -104,7 +105,6 @@ export const setAuthMe = (): AppThunk => (dispatch) => {
                 ? e.response.data.error
                 : (e.message + ', more details in the console');
             console.log(error)
-            dispatch(setErrorMes(error))
             console.log('Error:', {...e})
             dispatch(setLoginAC(false))
         })

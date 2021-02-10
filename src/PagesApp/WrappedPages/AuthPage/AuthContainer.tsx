@@ -9,6 +9,7 @@ import {Redirect, NavLink} from "react-router-dom";
 import {setErrorMes, setLoginT} from "../../../Redux/AuthReducer/AuthReducer";
 import Spinner from "../../../Common/preloader/Spinner";
 import {RoutingType} from "../../../Routes/Routes";
+import {validateInputNewPas} from "../../../Utils/Validation/ValidationPassword";
 
 interface Props {
 
@@ -16,7 +17,7 @@ interface Props {
 
 const AuthContainer: FC<Props> = () => {
     const reEmail = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    const rePassword = /(?=.*\d)(?=.*[a-zA-Z]).{6,}/;
+
     const [email, setEmail] = useState<string>()
     const [errorLog, setErrorLog] = useState<boolean>(false)
     const [password, setPassword] = useState<string>()
@@ -43,23 +44,9 @@ const AuthContainer: FC<Props> = () => {
             setErrorLog(false)
         }
     }
-    const validateInputPas = (value: string) => {
-        setPassword(value)
-        if (value.trim() === '') {
-            setErrorMesPas('Password Required')
-            setErrorPas(true)
-        } else if (!rePassword.test(value)) {
-            console.log(rePassword.test(value))
-            setErrorPas(true)
-            setErrorMesPas('the password must contain one digit, and length must be 6 and more')
-
-        } else {
-            setErrorMesPas('')
-            setErrorPas(false)
-        }
-
+    const changeInputValuePassword = (value: string) => {
+        validateInputNewPas(setPassword, value, setErrorMesPas, setErrorPas)
     }
-
     const logHandler = () => {
 
         if (email && password) {
@@ -94,7 +81,7 @@ const AuthContainer: FC<Props> = () => {
                         />
                         <SuperInputText
                             value={password}
-                            onChangeText={validateInputPas}
+                            onChangeText={changeInputValuePassword}
                             error={errorPas}
                             placeholder={'Password'}
                             errorMes={errorMesPas}
