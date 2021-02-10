@@ -20,7 +20,7 @@ export type ResponseTypeProfile = {
     isAdmin: boolean;
     verified: boolean; // подтвердил ли почту
     rememberMe: boolean;
-    error?: string;
+    token:string
 }
 
 export type ResponseTypeLogOut = {
@@ -43,6 +43,13 @@ export const ApiAuth = {
     },
     authMe() {
         return axiosInstance.post<ResponseTypeProfile>('/auth/me')
+    },
+    changeName(name:string) {
+        return axiosInstance.put<{ updatedUser: ResponseTypeProfile }>('/auth/me', {name: name})
+    },
+    changePas(password:string, token:string){
+        return axiosInstance.post('/auth/set-new-password', {password:password,
+            resetPasswordToken:token})
     }
 }
 

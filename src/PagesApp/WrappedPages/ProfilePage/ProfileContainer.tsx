@@ -1,5 +1,4 @@
-import {FC} from "react";
-import ProfileComponent from "./ProfileComponent";
+import React, {FC} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../Redux/Store";
 import {Link, Redirect} from "react-router-dom";
@@ -7,6 +6,7 @@ import {RoutingType} from "../../../Routes/Routes";
 import {setLogOut} from "../../../Redux/AuthReducer/AuthReducer";
 import Spinner from "../../../Common/preloader/Spinner";
 import style from './ProfileContainer.module.scss'
+import ProfileChangeName from "./ProfileChangeName/ProfileChangeName";
 
 interface Props {
 
@@ -16,7 +16,10 @@ const ProfileContainer: FC<Props> = () => {
     const isLogin = useSelector((state: AppRootStateType) => state.auth.isLogin)
     const profile = useSelector((state: AppRootStateType) => state.profile.profile)
     const status = useSelector((state: AppRootStateType) => state.auth.status)
+    const errorMes = useSelector((state: AppRootStateType) => state.auth.errorMes)
     const dispatch = useDispatch();
+    console.log(document.cookie)
+
 
     if (!isLogin || !profile) {
         return <Redirect to={'/auth'}/>
@@ -36,15 +39,20 @@ const ProfileContainer: FC<Props> = () => {
     if (profile) {
         return (
             <div className={style.profile_main_wrapper}>
-                <ProfileComponent title={'Profile Page'}/>
+                <div>
+                    <h1>Profile</h1>
+                </div>
                 <div className={style.profile_item_wrapper}>
                     <div className={style.profile_item}><span className={style.item_title}>E-mail:</span> <span>{profile.email}</span></div>
-                    <div className={style.profile_item}><span className={style.item_title}>name:</span> <span>{profile.name}</span></div>
+                    <div className={style.profile_item}><span className={style.item_title}>name:</span> <span>{profile.name}</span>
+                        <ProfileChangeName errorMes={errorMes}/>
+                    </div>
                     <div className={style.profile_item}><span className={style.item_title}>id:</span><span>{profile._id}</span></div>
                 </div>
                 <Link to={RoutingType.auth} onClick={logOutHandler}>
                     <span>Log Out</span>
                 </Link>
+
             </div>)
     } else {
         return <div/>

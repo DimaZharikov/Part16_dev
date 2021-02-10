@@ -1,7 +1,7 @@
 import thunkMiddleware, { ThunkAction } from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware} from "redux";
 import AuthReducer, { AuthType } from "./AuthReducer/AuthReducer";
-import NewPassReducer from "./NewPassReducer/NewPassReducer";
+import NewPassReducer, {NewMesActionType} from "./NewPassReducer/NewPassReducer";
 import ErrorReducer from "./ErrorReducer/ErrorReducer";
 import ProfileReducer, { ActionProfileType } from "./ProfileReducer/ProfileReducer";
 import  RegistrationReducer from "./RegistrationReducer/RegistartionReducer";
@@ -32,7 +32,7 @@ export const store = createStore(reducer, composeWithDevTools(middleware));
 
 
 export type AppRootStateType = ReturnType<typeof reducer>
-export type AppActionType = AuthType | ActionProfileType | AppType
+export type AppActionType = AuthType | ActionProfileType | AppType | NewMesActionType
 
 export type AppThunk<ReturnType = void> = ThunkAction<
     ReturnType,

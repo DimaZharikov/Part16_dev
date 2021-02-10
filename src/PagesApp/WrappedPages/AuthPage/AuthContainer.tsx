@@ -6,9 +6,10 @@ import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
 import style from './AuthContainer.module.css'
 import {AppRootStateType} from "../../../Redux/Store";
 import {Redirect, NavLink} from "react-router-dom";
-import {setLoginT} from "../../../Redux/AuthReducer/AuthReducer";
+import {setErrorMes, setLoginT} from "../../../Redux/AuthReducer/AuthReducer";
 import Spinner from "../../../Common/preloader/Spinner";
 import {RoutingType} from "../../../Routes/Routes";
+import {validateInputNewPas} from "../../../Utils/Validation/ValidationPassword";
 
 interface Props {
 
@@ -16,7 +17,7 @@ interface Props {
 
 const AuthContainer: FC<Props> = () => {
     const reEmail = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    const rePassword = /(?=.*\d)(?=.*[a-zA-Z]).{6,}/;
+
     const [email, setEmail] = useState<string>()
     const [errorLog, setErrorLog] = useState<boolean>(false)
     const [password, setPassword] = useState<string>()
@@ -26,44 +27,32 @@ const AuthContainer: FC<Props> = () => {
     const [check, setCheck] = useState<boolean>(false)
     const isLogin = useSelector((state: AppRootStateType) => state.auth.isLogin)
     const status = useSelector((state: AppRootStateType) => state.auth.status)
-    const profile = useSelector((state: AppRootStateType) => state.profile.profile)
-    console.log(profile)
+    const errordata = useSelector((state: AppRootStateType) => state.auth.errorMes)
+    console.log(errordata)
     const dispatch = useDispatch()
     const validateInputLog = (value: string) => {
         setEmail(value)
         if (value.trim() === '') {
-            setErrorMesLog('Login Required')
+            setErrorMesLog('Email Required')
             setErrorLog(true)
 
         } else if (!reEmail.test(value)) {
             setErrorLog(true)
-            setErrorMesLog('Login invalid')
+            setErrorMesLog('Email invalid')
         } else {
             setErrorMesLog('')
             setErrorLog(false)
         }
     }
-    const validateInputPas = (value: string) => {
-        setPassword(value)
-        if (value.trim() === '') {
-            setErrorMesPas('Password Required')
-            setErrorPas(true)
-        } else if (!rePassword.test(value)) {
-            console.log(rePassword.test(value))
-            setErrorPas(true)
-            setErrorMesPas('the password must contain one digit, and length must be 6 and more')
-
-        } else {
-            setErrorMesPas('')
-            setErrorPas(false)
-        }
-
+    const changeInputValuePassword = (value: string) => {
+        validateInputNewPas(setPassword, value, setErrorMesPas, setErrorPas)
     }
-
     const logHandler = () => {
 
         if (email && password) {
             dispatch(setLoginT(email, password, check))
+        } else {
+            dispatch(setErrorMes('Password and Email Required'))
         }
 
     }
@@ -92,7 +81,7 @@ const AuthContainer: FC<Props> = () => {
                         />
                         <SuperInputText
                             value={password}
-                            onChangeText={validateInputPas}
+                            onChangeText={changeInputValuePassword}
                             error={errorPas}
                             placeholder={'Password'}
                             errorMes={errorMesPas}
@@ -101,7 +90,7 @@ const AuthContainer: FC<Props> = () => {
                             className={'otherInput'}
                         />
                         <div className={style.auth_link}>
-                            <span><NavLink to={RoutingType.newPass}>Registration</NavLink></span>
+                            <span><NavLink to={RoutingType.registration}>Registration</NavLink></span>
                             <span><NavLink to={RoutingType.resPass}>Forgot Pas?</NavLink></span>
                         </div>
                     </div>
@@ -122,8 +111,12 @@ const AuthContainer: FC<Props> = () => {
                         ? <Spinner/>
                         : status === 'failed'
                         ? <div>
-                        <h1>something wrong</h1></div>
+                        <h1>{errordata}</h1></div>
                         : ''
+
+                }
+                {
+                    !!errordata ? <h5 className={style.errorMesOp}> {errordata}</h5> : ''
                 }
             </div>
         </div>
