@@ -78,10 +78,9 @@ export const putData = (email: string, password: string) =>
         ApiRegistration.register(email, password)
             .then (res => {
                 dispatch(setStatus("succeeded"))
-                setRegistration(false)
+                dispatch(setRegistration(true))
             })
             .catch(e => {
-
                 const error = e.response
                     ? e.response.data.error
                     : (e.response.data.error + 'check console')
@@ -90,6 +89,7 @@ export const putData = (email: string, password: string) =>
                 dispatch(setError(error))
                 dispatch(setStatus("failed"))
             })
+            .finally(()=> dispatch(setRegistration(false)))
     }
 
 
