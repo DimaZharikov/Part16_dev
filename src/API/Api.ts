@@ -34,5 +34,11 @@ export const ApiAuth = {
     },
     logOut() {
         return axiosInstance.delete<ResponseTypeLogOut>('/auth/me')
-    }
+    },
+    recovery(email: string) {
+        return axiosInstance.post('/auth/forgot',{email, message: `<div style="background-color: lime; padding: 15px">	
+	password recovery link: 
+	<a href='http://localhost:3000/#/resPassword/$token$'>
+	link</a></div>` })
+ }
 }

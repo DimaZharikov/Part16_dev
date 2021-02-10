@@ -5,7 +5,7 @@ import NewPassReducer from "./NewPassReducer/NewPassReducer";
 import ErrorReducer from "./ErrorReducer/ErrorReducer";
 import ProfileReducer, { ActionProfileType } from "./ProfileReducer/ProfileReducer";
 import  RegistrationReducer from "./RegistrationReducer/RegistartionReducer";
-import ResPasswordReducer from "./ResPassReducer/ResPasswordReducer";
+import ResPasswordReducer, {ResPasswordType} from "./ResPassReducer/ResPasswordReducer";
 
 
 
@@ -28,7 +28,8 @@ export const store = createStore(reducer, applyMiddleware(thunkMiddleware));
 
 
 export type AppRootStateType = ReturnType<typeof reducer>
-export type AppActionType = AuthType | ActionProfileType
+export type AppActionType = AuthType | ActionProfileType | ResPasswordType
+
 
 export type AppThunk<ReturnType = void> = ThunkAction<
     ReturnType,
