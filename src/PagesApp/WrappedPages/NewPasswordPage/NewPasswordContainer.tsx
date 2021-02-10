@@ -7,7 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../Redux/Store";
 import {validateInputNewPas} from "../../../Utils/Validation/ValidationPassword";
 import {ChangePassword} from "../../../Redux/NewPassReducer/NewPassReducer";
-import {useHistory} from "react-router-dom";
+import {Redirect, useHistory} from "react-router-dom";
 import style from './NewPasswordContainer.module.scss'
 
 
@@ -24,7 +24,7 @@ const NewPasswordContainer: FC<Props> = () => {
     const [isValidConfirmPassword, setIsValidConfirmPassword] = useState<boolean>(false)
     const errorMes = useSelector((state: AppRootStateType) => state.newPas.errorMes)
     const loading = useSelector((state: AppRootStateType) => state.newPas.loading)
-
+    const isChange = useSelector((state: AppRootStateType) => state.newPas.changeMes)
     const dispatch = useDispatch()
 
 
@@ -51,7 +51,9 @@ const NewPasswordContainer: FC<Props> = () => {
         }
         setPassword('')
     }
-
+    if(isChange) {
+        return <Redirect to={'/auth'}/>
+    }
     return (
         <div className={style.wrapper_main}>
             <div className={style.wrapper_items}>
@@ -77,6 +79,7 @@ const NewPasswordContainer: FC<Props> = () => {
                     password</SuperButton></div>
                 {loading ? <Spinner/> : null}
                 {!!errorMes ? <span>errorMes</span> : null}
+
             </div>
         </div>)
 }
