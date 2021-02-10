@@ -156,7 +156,7 @@ const RegistrationContainer: FC<Props> = ({
                     errorMes={errorPassword}
                     setError={setIsValidPassword}
                     className={'otherInput'}
-                    type={password}
+                    type={'password'}
                 />
             </Paper>
 

@@ -1,7 +1,7 @@
 import thunkMiddleware, { ThunkAction } from 'redux-thunk';
 import { combineReducers, createStore, applyMiddleware} from "redux";
 import AuthReducer, { AuthType } from "./AuthReducer/AuthReducer";
-import NewPassReducer from "./NewPassReducer/NewPassReducer";
+import NewPassReducer, {NewMesActionType} from "./NewPassReducer/NewPassReducer";
 import ErrorReducer from "./ErrorReducer/ErrorReducer";
 import ProfileReducer, { ActionProfileType } from "./ProfileReducer/ProfileReducer";
 import  RegistrationReducer from "./RegistrationReducer/RegistartionReducer";
