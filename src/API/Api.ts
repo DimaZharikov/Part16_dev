@@ -47,7 +47,7 @@ export const ApiAuth = {
             return axiosInstance.post('/auth/forgot', {
                 email, message: `<div style="background-color: lime; padding: 15px">	
 	password recovery link: 
-	<a href='http://localhost:3000/#/resPassword/$token$'>
+	<a href='https://dimazharikov.github.io/Part16_dev/#/set-new-password/$token$'>
 	link</a></div>`
             })
         },

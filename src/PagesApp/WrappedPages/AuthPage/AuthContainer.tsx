@@ -111,12 +111,9 @@ const AuthContainer: FC<Props> = () => {
                         ? <Spinner/>
                         : status === 'failed'
                         ? <div>
-                        <h1>{errordata}</h1></div>
+                            <h5 className={style.errorMesOp}> {errordata}</h5></div>
                         : ''
 
-                }
-                {
-                    !!errordata ? <h5 className={style.errorMesOp}> {errordata}</h5> : ''
                 }
             </div>
         </div>

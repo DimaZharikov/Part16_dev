@@ -3,7 +3,7 @@ import {ApiAuth} from "../../API/Api";
 
 
 export interface stateProps {
-    changeMes?: string
+    changeMes: boolean
     errorMes?: string
     loading: boolean
 
@@ -17,12 +17,12 @@ export enum ActionType {
 }
 
 const initialState: stateProps = {
-    changeMes: undefined,
+    changeMes: false,
     errorMes: undefined,
     loading:false
 }
 //actions
-export const setNewMes = (changeMes:string) => ({type:ActionType.NEW_CHANGE_MES, payload:{changeMes}})
+export const setNewMes = (changeMes:boolean) => ({type:ActionType.NEW_CHANGE_MES, payload:{changeMes}})
 export const setErrorMes = (errorMes:string) => ({type:ActionType.ERROR_MES, payload: {errorMes}})
 const loadingNewPas = (loading:boolean) => ({type:ActionType.LOADING, payload:{loading}})
 
@@ -49,7 +49,7 @@ export const ChangePassword = (password: string, token:string):AppThunk => (disp
     dispatch(loadingNewPas(true))
     ApiAuth.changePas(password, token)
         .then(res => {
-            console.log(res)
+            dispatch(setNewMes(true))
         })
         .catch(e => {
             const error = e.response
@@ -61,6 +61,7 @@ export const ChangePassword = (password: string, token:string):AppThunk => (disp
         })
         .finally(() => {
             dispatch(loadingNewPas(false))
+            dispatch(setNewMes(false))
         })
 }
 

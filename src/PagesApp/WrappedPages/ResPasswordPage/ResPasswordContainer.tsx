@@ -62,7 +62,7 @@ const ResPasswordContainer : FC <Props> = ({
     }
 
     if (checkWith) {
-        return  <Redirect to={RoutingType.resPass}/>
+        return  <Redirect to={RoutingType.auth}/>
     }
 
     return (
