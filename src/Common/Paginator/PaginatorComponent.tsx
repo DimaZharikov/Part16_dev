@@ -1,21 +1,22 @@
 import React, {useState} from 'react'
 import styles from './Paginator.module.css'
-import cn from 'classnames'
+import cn from "classnames"
 
+//Paginators
 type PropsType = {
-    totalFriendCount: number
+    totalCount: number
     pageSize: number
     currentPage?: number
     onPageChangeHandler?: (pageNumber: number) => void
     portionSize?: number
 }
 
-let Paginator: React.FC<PropsType> = ({totalFriendCount, pageSize,
+let Paginator: React.FC<PropsType> = ({totalCount, pageSize,
                                           currentPage = 1,
                                           onPageChangeHandler = x => x,
                                           portionSize = 10}) => {
 
-    let pagesCount = Math.ceil(totalFriendCount / pageSize);
+    let pagesCount = Math.ceil(totalCount / pageSize);
 
     let pages: Array<number> = [];
     for (let i = 1; i <= pagesCount; i++) {
