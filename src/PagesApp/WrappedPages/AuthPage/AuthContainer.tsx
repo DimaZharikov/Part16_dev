@@ -18,9 +18,9 @@ interface Props {
 const AuthContainer: FC<Props> = () => {
     const reEmail = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
 
-    const [email, setEmail] = useState<string>()
+    const [email, setEmail] = useState<string>('nya-admin@nya.nya')
     const [errorLog, setErrorLog] = useState<boolean>(false)
-    const [password, setPassword] = useState<string>()
+    const [password, setPassword] = useState<string>('1qazxcvBG')
     const [errorMesLog, setErrorMesLog] = useState<string>('Login Required')
     const [errorMesPas, setErrorMesPas] = useState<string>('Password Required')
     const [errorPas, setErrorPas] = useState<boolean>(false)

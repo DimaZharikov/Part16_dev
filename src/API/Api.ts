@@ -8,6 +8,7 @@ const configOMB = {
     // heroku
     // baseURL:'https://neko-back.herokuapp.com/2.0',
     withCredentials: true,
+    
 };
 
 const axiosInstance = axios.create(configOMB);
@@ -35,6 +36,35 @@ export type ResponseTypeRegistration = {
     password: string,
     error?: string | undefined
 }
+
+
+export interface ResponseTypeCardsPacksData  {
+    _id: string,
+    userId: string,
+    name: string,
+    path: '/def',
+    cardsCount: number,
+    grade: number,
+    shots: number,
+    rating: number,
+    type : 'pack' | 'folder',
+    created: Date;
+    updated: Date;
+
+}
+
+export interface ResponseTypeCardsPacks {
+    cardPacks: Array<ResponseTypeCardsPacksData>,
+    page:number
+    pageCount:number
+    cardPacksTotalCount:number
+    minCardsCount:number
+    maxCardsCount:number
+    token:string
+    tokenDeathTime:number
+}
+
+
 
 export const ApiAuth = {
         login(email: string, password: string, rememberMe: boolean) {
@@ -70,4 +100,21 @@ export const ApiRegistration = {
     register(email: string, password: string) {
         return axiosInstance.post <ResponseTypeRegistration>('auth/register', {email, password})
     }
+}
+
+
+export const ApiPack = {
+    getCardPacks(page: number,pageCount:number) {
+        return axiosInstance.get<ResponseTypeCardsPacks>(`cards/pack`, {params: {page, pageCount}})
+    },
+    addCardPacks(body: {}) {
+        return axiosInstance.post<ResponseTypeCardsPacksData>(`cards/pack`, {cardsPack: body})
+    },
+    deleteCardPack(id: string) {
+        return axiosInstance.delete<ResponseTypeCardsPacksData>(`cards/pack`, {params: {id}})
+    },
+    putCardPack (body: {_id: string, name: string}) {
+        return axiosInstance.post<ResponseTypeCardsPacksData>(`cards/pack`, {body})
+    }
+
 }

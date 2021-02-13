@@ -30,6 +30,12 @@ const NavigationContainer: FC = () => {
                 activeClassName={style.active}
             >ERROR</NavLink>
         </div>
+        <div>
+            <NavLink to={RoutingType.packs}>
+                <h3>Page of Packs</h3>
+            </NavLink>
+        </div>
+
     </nav>
     )
 }

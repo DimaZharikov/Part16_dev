@@ -43,6 +43,11 @@ const NavigationComponent : FC= ({
                 <h3>Reset Password</h3>
             </NavLink>
         </div>
+        <div>
+            <NavLink to={RoutingType.packs}>
+                <h3>Page of Packs</h3>
+            </NavLink>
+        </div>
 
     </div>)
 }

@@ -1,7 +1,7 @@
 import { ThunkDispatch } from "redux-thunk";
 import {RequestStatusType} from "../AuthReducer/AuthReducer";
 import {AppRootStateType} from "../Store";
-import {ApiRegistration, ResponseTypeRegistration} from "../../API/Api";
+import {ApiRegistration} from "../../API/Api";
 
 
 export interface dataProps {

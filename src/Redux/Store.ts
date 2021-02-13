@@ -10,7 +10,7 @@ import ResPasswordReducer, {ResPasswordType} from "./ResPassReducer/ResPasswordR
 
 import {AppReducer, AppType } from './AppReducer/AppReducer';
 import {composeWithDevTools} from 'redux-devtools-extension'
-
+import PacksPageReducer from "./PacksPageReducer/PacksPageReducer";
 
 
 const reducer = combineReducers({
@@ -20,7 +20,9 @@ const reducer = combineReducers({
     profile: ProfileReducer,
     registration:  RegistrationReducer,
     resPas: ResPasswordReducer,
-    app: AppReducer
+    app: AppReducer,
+    packsPage: PacksPageReducer
+
 })
 
 
