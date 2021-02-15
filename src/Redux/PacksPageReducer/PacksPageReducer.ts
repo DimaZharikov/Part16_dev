@@ -2,6 +2,7 @@ import {ApiPack, ResponseTypeCardsPacksData} from "../../API/Api";
 import {RequestStatusType} from "../AuthReducer/AuthReducer";
 import {ThunkDispatch} from "redux-thunk";
 import {AppRootStateType} from "../Store";
+import UseErrorCatch from "../../Utils/Hooks/useErrorCatch";
 
 
 export interface stateProps {
@@ -11,6 +12,7 @@ export interface stateProps {
     isDisabled: boolean,
     pageSize: number
     currentPage: number
+    isPrivat: boolean
 }
 
 
@@ -20,7 +22,8 @@ const initialState: stateProps = {
     error: undefined,
     isDisabled: false,
     pageSize: 4,
-    currentPage: 1
+    currentPage: 1,
+    isPrivat: false
 
 }
 
@@ -31,6 +34,7 @@ export enum ActionType {
     SET_STATUS = "/PACKS/SET_STATUS",
     SET_ERROR = 'PACKS/SET_ERROR',
     IS_DISABLED = "PACKS/ADD_BTN/IS_DISABLED",
+    IS_PRIVAT = "PACKS/CHECK/IS_PRIVAT",
     SET_PAGE_SIZE = "PACKS/SET_PAGE_SIZE",
     SET_CURRENT_PAGE = "PACKS/SET_CURRENT_PAGE",
 }
@@ -65,6 +69,10 @@ export const isDisabled = (isDisabled: boolean): Action<boolean> => ({
     type: ActionType.IS_DISABLED,
     payload: isDisabled
 })
+export const seTisPrivat = (isPrivat: boolean): Action<boolean> => ({
+    type: ActionType.IS_PRIVAT,
+    payload: isPrivat
+})
 export const setPageSizeAC = (pageSize: number): Action<number> => ({
     type: ActionType.SET_PAGE_SIZE,
     payload: pageSize
@@ -78,48 +86,44 @@ export const setCurrentPageAC = (currentPage: number): Action<number> => ({
 //thunk
 
 
-export const getPacksThunk = (pageSize:number,currentPage:number) => (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>) => {
+export const getPacksThunk = (pageSize:number,currentPage:number, user_id?: string) => (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>) => {
     dispatch(setStatus('loading'))
-    ApiPack.getCardPacks(pageSize, currentPage)
+    ApiPack.getCardPacks(pageSize, currentPage, user_id)
         .then(res => {
-            console.log(res.data.cardPacks)            
+            console.log(res.data)
             dispatch(isDisabled(false))
             dispatch(getPacks(res.data.cardPacks))
             dispatch(setStatus('succeeded'))
         })
         .catch(e => {
-            const error = e.response.error
-                ? e.response.error
-                : (e.response.error + 'checkError')
-            console.log(error)
-            console.log('errors:', {...e})
-            dispatch(setError(error))
-            dispatch(setStatus('failed'))
+            UseErrorCatch(e, dispatch)
+
         })
         .finally(() => {
             dispatch(setStatus('succeeded'))
         })
 
 }
-export const addPacksThunk = (body: {}) =>
+export const addPacksThunk = (name:string) =>
     (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>, getState: () => AppRootStateType) => {
         dispatch(setStatus('loading'))
         const pageSize = getState().packsPage.pageSize
         const currentPage = getState().packsPage.currentPage
-        ApiPack.addCardPacks(body)
+        const isPrivat = getState().packsPage.isPrivat
+        const profile = getState().profile.profile
+        ApiPack.addCardPacks({name})
             .then(() => {
                 dispatch(isDisabled(true))
-                dispatch(getPacksThunk(pageSize,currentPage))
+                if(isPrivat && profile) {
+                    dispatch(getPacksThunk(pageSize,currentPage, profile._id))
+                } else {
+                    dispatch(getPacksThunk(pageSize,currentPage))
+                }
+
 
             })
             .catch(e => {
-                const error = e.response.error
-                    ? e.response.error
-                    : (e.response.error + 'checkError')
-                console.log(error)
-                console.log('errors:', {...e})
-                dispatch(setError(error))
-                dispatch(setStatus('failed'))
+                UseErrorCatch(e, dispatch)
             })
 
 
@@ -129,20 +133,20 @@ export const deletePackThunk = (_id: string) =>
     (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>, getState: () => AppRootStateType) => {
         const pageSize = getState().packsPage.pageSize
         const currentPage = getState().packsPage.currentPage
+        const isPrivat = getState().packsPage.isPrivat
+        const profile = getState().profile.profile
         dispatch(setStatus('loading'))
         ApiPack.deleteCardPack(_id)
             .then(() => {
                 dispatch(isDisabled(false))
-                dispatch(getPacksThunk(pageSize, currentPage))
+                if(isPrivat && profile) {
+                    dispatch(getPacksThunk(pageSize,currentPage, profile._id))
+                } else {
+                    dispatch(getPacksThunk(pageSize,currentPage))
+                }
             })
             .catch(e => {
-                const error = e.response.error
-                    ? e.response.error
-                    : (e.response.error + 'checkError')
-                console.log(error)
-                console.log('errors:', {...e})
-                dispatch(setError(error))
-                dispatch(setStatus('failed'))
+                UseErrorCatch(e, dispatch)
             })
     }
 
@@ -150,19 +154,20 @@ export const onChangeNamePackThunk = ( _id: string, name: string) =>
     (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>, getState: () => AppRootStateType) => {
         const pageSize = getState().packsPage.pageSize
         const currentPage = getState().packsPage.currentPage
+        const isPrivat = getState().packsPage.isPrivat
+        const profile = getState().profile.profile
         ApiPack.putCardPack({_id,name})
             .then ((res)=> {
                 console.log(res)
-                dispatch(getPacksThunk(pageSize,currentPage))
+                if(isPrivat && profile) {
+                    dispatch(getPacksThunk(pageSize,currentPage, profile._id))
+                } else {
+                    dispatch(getPacksThunk(pageSize,currentPage))
+                }
+
             })
             .catch(e => {
-            const error = e.response.error
-                ? e.response.error
-                : (e.response.error + 'checkError')
-            console.log(error)
-            console.log('errors:', {...e})
-            dispatch(setError(error))
-            dispatch(setStatus('failed'))
+                UseErrorCatch(e, dispatch)
         })
     }
 
@@ -198,6 +203,8 @@ const PacksPageReducer = (state: stateProps = initialState, action: Action<Respo
             return {...state, pageSize: action.payload}
         case ActionType.SET_CURRENT_PAGE:
             return {...state, currentPage: action.payload}
+        case ActionType.IS_PRIVAT:
+            return {...state, isPrivat: action.payload}
         default:
             return state
     }

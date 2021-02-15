@@ -1,12 +1,22 @@
 import React, {FC, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addPacksThunk, deletePackThunk, getPacksThunk, setCurrentPageAC, setPageSizeAC} from "../../../Redux/PacksPageReducer/PacksPageReducer";
+import {
+    addPacksThunk,
+    deletePackThunk,
+    getPacksThunk,
+    setCurrentPageAC,
+    seTisPrivat,
+    setPageSizeAC
+} from "../../../Redux/PacksPageReducer/PacksPageReducer";
 import {AppRootStateType} from "../../../Redux/Store";
 import PacksComponent from "./PacksComponent";
 import TableWrapper from "../../../Components/TableWrapper/TableWrapper";
 import Paginator from "../../../Common/Paginator/PaginatorComponent";
 import SuperSelect from "../../../Components/c5-SuperSelect/SuperSelect";
 import Spinner from "../../../Common/preloader/Spinner";
+import SuperCheckbox from "../../../Components/c3-SuperCheckbox/SuperCheckbox";
+import {Redirect} from "react-router-dom";
+import style from './PacksContainer.module.scss'
 
 
 interface Props {
@@ -20,11 +30,18 @@ const PacksContainer: FC<Props> = () => {
     const currentPage= useSelector((state: AppRootStateType) => state.packsPage.currentPage)
     const cardPacks = useSelector((state: AppRootStateType) => state.packsPage.cardPacks)
     const status = useSelector((state: AppRootStateType) => state.packsPage.status)
-    console.log(status)
-    useEffect(() => {
+    const isPrivat = useSelector((state: AppRootStateType) => state.packsPage.isPrivat)
+    const userId = useSelector((state: AppRootStateType) => state.profile.profile?._id)
+    const isLogin = useSelector((state: AppRootStateType) => state.auth.isLogin)
+    const profile = useSelector((state: AppRootStateType) => state.profile.profile)
 
-        dispatch(getPacksThunk(pageSize, currentPage))
-    }, [pageSize, currentPage])
+    useEffect(() => {
+        if (isPrivat){
+            dispatch(getPacksThunk(pageSize, currentPage, userId))
+        } else {
+            dispatch(getPacksThunk(pageSize, currentPage))
+        }
+    }, [pageSize, currentPage, isPrivat, userId])
     const onDeletePack = (id: string) => {
         dispatch(deletePackThunk(id))
     }
@@ -34,11 +51,17 @@ const PacksContainer: FC<Props> = () => {
     const onPageChangeHandler = (pageNumber: number) => {
         dispatch(setCurrentPageAC(pageNumber))
     }
-    const onAddPack = () => {
-        dispatch(addPacksThunk({}))
+    const onAddPack = (name:string) => {
+        dispatch(addPacksThunk(name))
+    }
+    const setIsPrivatHandler = () => {
+        dispatch(seTisPrivat(!isPrivat))
+    }
+    if (!isLogin || !profile) {
+        return <Redirect to={'/auth'}/>
     }
     return (
-        <>
+        <>  <div className={style.isPrivat}><SuperCheckbox onChangeChecked={setIsPrivatHandler}>is Privat</SuperCheckbox></div>
             <TableWrapper onClickHandler={onAddPack}>
                 {
                     status === 'loading'
@@ -55,6 +78,7 @@ const PacksContainer: FC<Props> = () => {
                 <Paginator totalCount={100} pageSize={pageSize} currentPage={currentPage} onPageChangeHandler={onPageChangeHandler}/>
                 <div>Page size: <SuperSelect options={totalCoutnOptions} onChangeOption={onChangeOption}/></div>
             </TableWrapper>
+
         </>
     )
 }

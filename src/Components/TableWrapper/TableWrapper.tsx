@@ -1,16 +1,18 @@
 import React, {FC} from "react";
-import SuperButton from "../c2-SuperButton/SuperButton";
+import AddNewPack from "../../PagesApp/WrappedPages/PacksPage/AddNewPack/AddNewPack";
 
 import style from './TableWrapper.module.scss'
 
 interface Props {
-    onClickHandler?: () => void
+    onClickHandler?: (name:string) => void
 }
 
 
 
 const TableWrapper: FC<Props> = ({children, onClickHandler}) => {
-
+    const addNewName = (name:string) => {
+        onClickHandler && onClickHandler(name)
+    }
     return (
         <div className={style.main_wrapped}>
             <div className={style.table_wrapped}>
@@ -19,7 +21,7 @@ const TableWrapper: FC<Props> = ({children, onClickHandler}) => {
                     <div className={style.title_item}>cardsCount</div>
                     <div className={style.title_item}>updated</div>
                     <div className={style.title_item}>
-                        <SuperButton onClick={onClickHandler} className='btn_table'>Add</SuperButton>
+                       <AddNewPack addNewName={addNewName}/>
                     </div>
 
                 </div>

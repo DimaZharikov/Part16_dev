@@ -29,12 +29,11 @@ const NavigationContainer: FC = () => {
                 to={RoutingType.error}
                 activeClassName={style.active}
             >ERROR</NavLink>
-        </div>
-        <div>
-            <NavLink to={RoutingType.packs}>
-                <h3>Page of Packs</h3>
+            <NavLink to={RoutingType.packs} activeClassName={style.active}>
+                Page of Packs
             </NavLink>
         </div>
+
 
     </nav>
     )
