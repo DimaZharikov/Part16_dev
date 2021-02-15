@@ -61,7 +61,8 @@ const PacksContainer: FC<Props> = () => {
         return <Redirect to={'/auth'}/>
     }
     return (
-        <>  <div className={style.isPrivat}><SuperCheckbox onChangeChecked={setIsPrivatHandler}>is Privat</SuperCheckbox></div>
+        <div className={style.main_wrapp}>
+            <div className={style.isPrivat}><SuperCheckbox onChangeChecked={setIsPrivatHandler}>is Privat</SuperCheckbox></div>
             <TableWrapper onClickHandler={onAddPack}>
                 {
                     status === 'loading'
@@ -79,7 +80,7 @@ const PacksContainer: FC<Props> = () => {
                 <div>Page size: <SuperSelect options={totalCoutnOptions} onChangeOption={onChangeOption}/></div>
             </TableWrapper>
 
-        </>
+        </div>
     )
 }
 

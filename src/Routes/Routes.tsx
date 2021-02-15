@@ -24,7 +24,7 @@ export enum RoutingType {
 
 
 const Routes : FC = () => {
-    return (<div>
+    return (<>
             <Switch>
                 <Route path={"/"} exact render={() => <Redirect to={RoutingType.profile}/>}/>
                 <Route exact path={RoutingType.auth} render={()=> <AuthContainer/>}/>
@@ -37,7 +37,7 @@ const Routes : FC = () => {
                 <Route path={RoutingType.error} render={()=> <ErrorContainer/>}/>
                 <Redirect from={'*'} to={RoutingType.error}/>
             </Switch>
-    </div>)
+    </>)
 }
 
 
