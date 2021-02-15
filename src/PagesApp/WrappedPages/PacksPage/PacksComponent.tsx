@@ -1,8 +1,11 @@
-import {FC} from "react";
+import React, {FC} from "react";
 import {ResponseTypeCardsPacksData} from "../../../API/Api";
 import style from './Packs.module.scss'
 import {useDispatch} from "react-redux";
 import ChangeName from "./ChengeNameInput";
+import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
+import { NavLink } from "react-router-dom";
+import TableItem from "../../../Components/TableWrapper/TableIttem/TableItem";
 
 
 interface Props{
@@ -18,16 +21,17 @@ const PacksComponent: FC <Props> = ({
 
 
 
-    return (<div className={style.items}>
-        <ChangeName namePack = {cardPacks.name} id= {cardPacks._id}/>
-        <h3>name: {cardPacks.name}</h3>
-        <h3> cards Count: {cardPacks.cardsCount}</h3>
-        <h3> Update: {cardPacks.updated}</h3>
-        <h3> Created:{cardPacks.created}</h3>
-        <button onClick = {(e)=>onDeletePack(cardPacks._id)}>delete</button>
+    return (
+        < >
+            <TableItem name1={cardPacks.name} name2={cardPacks.cardsCount} name3={cardPacks.updated}>
+                <SuperButton onClick={() => onDeletePack(cardPacks._id)} className='btn_table'>del</SuperButton>
+                <ChangeName namePack={cardPacks.name} id={cardPacks._id}/>
+                <NavLink to={`/cards/${cardPacks._id}`}> Cards </NavLink>
+            </TableItem>
 
+        </>
 
-</div>)
+    )
 }
 
 

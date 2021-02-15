@@ -25,7 +25,7 @@ const ChangeName: FC<Props> = ({id, namePack, errorMes}) => {
     }
     return (
         <>
-            <span onClick={() => setModal(true)}>Change name</span>
+            <SuperButton onClick={() => setModal(true)} className='btn_table'>Change name</SuperButton>
             <Modal
                 modal={modal}
                 setModal={setModal}

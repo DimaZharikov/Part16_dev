@@ -16,7 +16,8 @@ export enum RoutingType {
     error="/404",
     resPass = "/resPassword",
     newPass ="/set-new-password",
-    packs = "/packs"
+    packs = "/packs",
+    cards = "/cards"
 }
 
 
@@ -32,6 +33,7 @@ const Routes : FC = () => {
                 <Route exact path = {RoutingType.resPass} render = {()=> <ResPasswordContainer/>}/>
                 <Route path = {RoutingType.newPass} render = {()=> <NewPasswordContainer/>}/>
                 <Route  exact path = {RoutingType.packs} render = {()=> <PacksContainer/>}/>
+                <Route path = {`${RoutingType.cards}/:cardId`} render = {()=> <PacksContainer/>}/>
                 <Route path={RoutingType.error} render={()=> <ErrorContainer/>}/>
                 <Redirect from={'*'} to={RoutingType.error}/>
             </Switch>
