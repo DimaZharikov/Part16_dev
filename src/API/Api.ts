@@ -118,3 +118,36 @@ export const ApiPack = {
     }
 
 }
+
+
+export interface ResponseTypeCardsData {
+    answer: string
+    question:string
+    cardsPack_id: string
+    grade: number
+    rating: number
+    shots: number
+    type: string
+    user_id: number
+    created: string
+    updated: string
+    __v: number
+    _id: string
+}
+
+
+export interface ResponseTypeCardsType {
+    cards: Array<ResponseTypeCardsData> | null
+    cardsTotalCount: number
+    maxGrade: number
+    minGrade: number
+    page: number
+    pageCount: number
+    packUserId: string
+}
+
+export const ApiCards = {
+    getCards(cardsPack_id:string){
+        return axiosInstance.get<ResponseTypeCardsType>("cards/card", {params: {cardsPack_id}})
+    }
+}

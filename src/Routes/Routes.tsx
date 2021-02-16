@@ -7,6 +7,8 @@ import ResPasswordContainer from "../PagesApp/WrappedPages/ResPasswordPage/ResPa
 import NewPasswordContainer from "../PagesApp/WrappedPages/NewPasswordPage/NewPasswordContainer";
 import ErrorContainer from "../PagesApp/WrappedPages/ErrorPage/ErrorContainer";
 import PacksContainer from "../PagesApp/WrappedPages/PacksPage/PacksContainer";
+import CardsPageContainer from "../PagesApp/WrappedPages/CardsPage/CardsPageConteiner"
+
 
 
 export enum RoutingType {
@@ -33,7 +35,7 @@ const Routes : FC = () => {
                 <Route exact path = {RoutingType.resPass} render = {()=> <ResPasswordContainer/>}/>
                 <Route path = {RoutingType.newPass} render = {()=> <NewPasswordContainer/>}/>
                 <Route  exact path = {RoutingType.packs} render = {()=> <PacksContainer/>}/>
-                <Route path = {`${RoutingType.cards}/:cardId`} render = {()=> <PacksContainer/>}/>
+                <Route path = {`${RoutingType.cards}/:cardId`} render = {()=> <CardsPageContainer/>}/>
                 <Route path={RoutingType.error} render={()=> <ErrorContainer/>}/>
                 <Redirect from={'*'} to={RoutingType.error}/>
             </Switch>
