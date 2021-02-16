@@ -35,6 +35,11 @@ const NavigationContainer: FC = () => {
                 <h3>Page of Packs</h3>
             </NavLink>
         </div>
+        <div>
+            <NavLink to={RoutingType.cards}>
+                <h3>cards</h3>
+            </NavLink>
+        </div>
 
     </nav>
     )
