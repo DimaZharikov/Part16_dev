@@ -1,25 +1,25 @@
 import React, {FC, useState} from 'react';
-import {useDispatch} from "react-redux";
 import SuperInputText from "../../../Components/c1-SuperInputText/SuperInputText";
 import Modal from "../../../Components/Modal/Modal";
 import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
-import {onChangeNamePackThunk} from "../../../Redux/PacksPageReducer/PacksPageReducer";
 
 interface Props {
-    errorMes?: string
+    errorMes?: string,
     namePack: string,
-    id: string
+    cardsPack_id: string,
+
+    onChangeName: (id: string, name:string) => void
 }
 
-const ChangeName: FC<Props> = ({id, namePack, errorMes}) => {
+const ChangeName: FC<Props> = ({cardsPack_id, namePack, errorMes,onChangeName
+                                   }) => {
 
     const [name, setName] = useState<string>(namePack)
     const [modal, setModal] = useState<boolean>(false)
-    const dispatch = useDispatch();
 
     const changeNameHandler = () => {
         if (name) {
-            dispatch(onChangeNamePackThunk(id, name))
+            onChangeName(cardsPack_id, name)
             setModal(false)
         }
     }

@@ -2,13 +2,14 @@ import {ApiCards, ResponseTypeCardsData} from "../../API/Api";
 import {ThunkDispatch} from "redux-thunk";
 import {AppRootStateType} from "../Store";
 import {RequestStatusType} from "../AuthReducer/AuthReducer";
+import UseErrorCatch from "../../Utils/Hooks/useErrorCatch";
 
 
 export interface stateProps {
     cards: Array<ResponseTypeCardsData> | null
     status: RequestStatusType,
-    error?: string ,
-    page: number,
+    error: string | null,
+
 
 }
 
@@ -16,8 +17,7 @@ export interface stateProps {
 const initialState: stateProps = {
     cards: null,
     status: "succeeded",
-    page: 1,
-
+    error: null,
 
 
 }
@@ -27,7 +27,9 @@ const initialState: stateProps = {
 export enum ActionType {
     GET_CARDS = "CardsContainer/GET_CARDS",
     SET_STATUS = "CardsContainer/SET_STATUS",
+
     SET_ERROR = "CardsContainer/SET_ERROR",
+
 }
 
 
@@ -48,37 +50,80 @@ export const setCards = (cards: Array<ResponseTypeCardsData> | null): Action<Arr
 export const setStatus = (status: RequestStatusType): Action<RequestStatusType> => ({
     type: ActionType.SET_STATUS,
     payload: status
- })
+})
 
-export const error = (error: string): Action<string> => ({
+
+export const getError = (error: string): Action<string> => ({
     type: ActionType.SET_ERROR,
     payload: error
 })
 
 //thunk
-export const getCardsThunk = ( cardsPack_id: string) => (dispatch: ThunkDispatch<AppRootStateType, {}, ActionsType>)  => {
-    dispatch (setStatus('loading'))
+export const getCardsThunk = (cardsPack_id: string, question?: string, _id?: string) => (dispatch: ThunkDispatch<AppRootStateType, {}, ActionsType>) => {
+    dispatch(setStatus('loading'))
     ApiCards.getCards(cardsPack_id)
-        .then ((res) => {
-            console.log('cards:',res.data.cards)
+        .then((res) => {
+            console.log('cards:', res.data.cards)
             dispatch(setCards(res.data.cards))
             dispatch(setStatus('succeeded'))
         })
-        .catch((e)=> {
-            const error = e.response.error
-            ? e.response.error : (e.response.error + 'error')
-            console.log(error)
-            console.log('errors:', {...e})
-            dispatch(setStatus("failed"))
+        .catch((e) => {
+            UseErrorCatch(e, dispatch)
         })
-}
+        .finally(() => {
+        dispatch(setStatus('succeeded'))
+    })
+};
 
+export const addCardsThunk = (cardsPack_id: string, question: string) =>
+    (dispatch: ThunkDispatch<AppRootStateType, {}, ActionsType>) => {
+        dispatch(setStatus('loading'))
+        ApiCards.addCards(cardsPack_id, question)
+            .then(() => {
+                dispatch(getCardsThunk(cardsPack_id, question))
+                dispatch(setStatus('succeeded'))
+            })
+            .catch((e) => {
+                UseErrorCatch(e, dispatch)
+            })
+
+    }
+
+
+export const deleteCardsThunk = (cardsPack_id: string,_id: string) =>
+    (dispatch: ThunkDispatch<AppRootStateType, {}, ActionsType>) => {
+        dispatch(setStatus('loading'))
+        ApiCards.deleteCards(_id)
+            .then(() => {
+                dispatch(getCardsThunk(cardsPack_id,_id))
+                dispatch(setStatus('succeeded'))
+            })
+            .catch(e => {
+                UseErrorCatch(e, dispatch)
+            })
+    }
+
+
+    export const onChangedCardsThunk = (cardsPack_id: string,_id: string, question: string)=>
+        (dispatch: ThunkDispatch<AppRootStateType, {}, ActionsType>) => {
+            dispatch(setStatus('loading'))
+            ApiCards.putCards(_id, question)
+                .then(()=> {
+                    dispatch(getCardsThunk(cardsPack_id,_id,question))
+                    dispatch(setStatus('succeeded'))
+
+                })
+                .catch(e => {
+                UseErrorCatch(e, dispatch)
+            })
+        }
 
 
 const CardsReducer = (state: stateProps = initialState,
                       action: Action<ResponseTypeCardsData[] & string
                           & RequestStatusType>): stateProps => {
     switch (action.type) {
+        //get cards from API
         case ActionType.GET_CARDS:
             return {
                 ...state, cards: action.payload
@@ -89,9 +134,9 @@ const CardsReducer = (state: stateProps = initialState,
             return {
                 ...state, status: action.payload
             };
-            //error
+        //error
         case ActionType.SET_ERROR:
-            return { ...state, error: action.payload}
+            return {...state, error: action.payload}
 
 
         default:
@@ -101,7 +146,8 @@ const CardsReducer = (state: stateProps = initialState,
 }
 
 
-type  ActionsType= ReturnType<typeof setCards> | ReturnType<typeof setStatus>
+type  ActionsType = ReturnType<typeof setCards> | ReturnType<typeof setStatus> |
+    ReturnType<typeof getError>
 
 
 export default CardsReducer

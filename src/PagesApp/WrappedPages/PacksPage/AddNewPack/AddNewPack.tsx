@@ -20,7 +20,7 @@ const AddNewPack:FC<Props> = (props) => {
     }
     return (
         <>
-            <SuperButton onClick={() => setModal(true)}>Add pack</SuperButton>
+            <SuperButton onClick={() => setModal(true)}>Add</SuperButton>
             <Modal
                 modal={modal}
                 setModal={setModal}

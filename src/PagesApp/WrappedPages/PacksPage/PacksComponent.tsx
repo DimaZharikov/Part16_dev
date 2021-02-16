@@ -6,6 +6,8 @@ import ChangeName from "./ChengeNameInput";
 import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
 import { NavLink } from "react-router-dom";
 import TableItem from "../../../Components/TableWrapper/TableIttem/TableItem";
+import {getCardsThunk} from "../../../Redux/CardsReducer/CardsReducer";
+import {onChangeNamePackThunk} from "../../../Redux/PacksPageReducer/PacksPageReducer";
 
 
 interface Props{
@@ -18,15 +20,23 @@ const PacksComponent: FC <Props> = ({
 }) => {
 
     const dispatch = useDispatch()
-
+    const onSwitchedToCards = () => {
+        dispatch(getCardsThunk(cardPacks._id))
+    }
+    const onChangeNamePack = (id: string, name: string) => {
+        dispatch(onChangeNamePackThunk(id, name))
+    }
 
 
     return (
         < >
             <TableItem name1={cardPacks.name} name2={cardPacks.cardsCount} name3={cardPacks.updated}>
                 <SuperButton onClick={() => onDeletePack(cardPacks._id)} className='btn_table'>del</SuperButton>
-                <ChangeName namePack={cardPacks.name} id={cardPacks._id}/>
-                <NavLink to={`/cards/${cardPacks._id}`}> Cards </NavLink>
+                <ChangeName namePack={cardPacks.name} cardsPack_id={cardPacks._id}
+                            onChangeName = {onChangeNamePack}/>
+                <NavLink to={`/cards/${cardPacks._id}`}
+                    onClick = {onSwitchedToCards}
+                > Cards </NavLink>
             </TableItem>
 
         </>

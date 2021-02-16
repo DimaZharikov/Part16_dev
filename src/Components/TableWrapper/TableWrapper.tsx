@@ -4,7 +4,8 @@ import AddNewPack from "../../PagesApp/WrappedPages/PacksPage/AddNewPack/AddNewP
 import style from './TableWrapper.module.scss'
 
 interface Props {
-    onClickHandler?: (name:string) => void
+    onClickHandler?: (name:string) => void,
+
 }
 
 

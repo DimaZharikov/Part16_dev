@@ -6,9 +6,9 @@ const configOMB = {
     // localBack
     // baseURL: "http://localhost:7542/2.0/",
     // heroku
-     baseURL:'https://neko-back.herokuapp.com/2.0',
+    baseURL: 'https://neko-back.herokuapp.com/2.0',
     withCredentials: true,
-    
+
 };
 
 const axiosInstance = axios.create(configOMB);
@@ -38,7 +38,7 @@ export type ResponseTypeRegistration = {
 }
 
 
-export interface ResponseTypeCardsPacksData  {
+export interface ResponseTypeCardsPacksData {
     _id: string,
     userId: string,
     name: string,
@@ -47,7 +47,7 @@ export interface ResponseTypeCardsPacksData  {
     grade: number,
     shots: number,
     rating: number,
-    type : 'pack' | 'folder',
+    type: 'pack' | 'folder',
     created: Date;
     updated: Date;
 
@@ -55,45 +55,46 @@ export interface ResponseTypeCardsPacksData  {
 
 export interface ResponseTypeCardsPacks {
     cardPacks: Array<ResponseTypeCardsPacksData>,
-    page:number
-    pageCount:number
-    cardPacksTotalCount:number
-    minCardsCount:number
-    maxCardsCount:number
-    token:string
-    tokenDeathTime:number
+    page: number
+    pageCount: number
+    cardPacksTotalCount: number
+    minCardsCount: number
+    maxCardsCount: number
+    token: string
+    tokenDeathTime: number
 }
 
 
-
 export const ApiAuth = {
-        login(email: string, password: string, rememberMe: boolean) {
-            return axiosInstance.post<ResponseTypeProfile>('/auth/login', {email, password, rememberMe})
-        },
-        logOut() {
-            return axiosInstance.delete<ResponseTypeLogOut>('/auth/me')
-        },
-        recovery(email: string) {
-            return axiosInstance.post('/auth/forgot', {
-                email, message: `<div style="background-color: lime; padding: 15px">	
+    login(email: string, password: string, rememberMe: boolean) {
+        return axiosInstance.post<ResponseTypeProfile>('/auth/login', {email, password, rememberMe})
+    },
+    logOut() {
+        return axiosInstance.delete<ResponseTypeLogOut>('/auth/me')
+    },
+    recovery(email: string) {
+        return axiosInstance.post('/auth/forgot', {
+            email, message: `<div style="background-color: lime; padding: 15px">	
 	password recovery link: 
 	<a href='https://dimazharikov.github.io/Part16_dev/#/set-new-password/$token$'>
 	link</a></div>`
-            })
-        },
+        })
+    },
     authMe() {
         return axiosInstance.post<ResponseTypeProfile>('/auth/me')
     },
-    changeName(name:string) {
+    changeName(name: string) {
         return axiosInstance.put<{ updatedUser: ResponseTypeProfile }>('/auth/me', {name: name})
     },
-    changePas(password:string, token:string){
-        return axiosInstance.post('/auth/set-new-password', {password:password,
-            resetPasswordToken:token})
+    changePas(password: string, token: string) {
+        return axiosInstance.post('/auth/set-new-password', {
+            password: password,
+            resetPasswordToken: token
+        })
     }
 
 
-    }
+}
 
 
 export const ApiRegistration = {
@@ -104,16 +105,16 @@ export const ApiRegistration = {
 
 
 export const ApiPack = {
-    getCardPacks(pageCount:number,page: number, user_id?:string) {
+    getCardPacks(pageCount: number, page: number, user_id?: string) {
         return axiosInstance.get<ResponseTypeCardsPacks>(`cards/pack`, {params: {page, pageCount, user_id}})
     },
-    addCardPacks(body: {name:string}) {
+    addCardPacks(body: { name: string }) {
         return axiosInstance.post<ResponseTypeCardsPacksData>(`cards/pack`, {cardsPack: body})
     },
     deleteCardPack(id: string) {
         return axiosInstance.delete<ResponseTypeCardsPacksData>(`cards/pack`, {params: {id}})
     },
-    putCardPack (body: {_id: string, name: string}) {
+    putCardPack(body: { _id: string, name: string }) {
         return axiosInstance.put<ResponseTypeCardsPacksData>(`cards/pack`, {cardsPack: body})
     }
 
@@ -122,7 +123,7 @@ export const ApiPack = {
 
 export interface ResponseTypeCardsData {
     answer: string
-    question:string
+    question: string
     cardsPack_id: string
     grade: number
     rating: number
@@ -130,7 +131,7 @@ export interface ResponseTypeCardsData {
     type: string
     user_id: number
     created: string
-    updated: string
+    updated: Date
     __v: number
     _id: string
 }
@@ -147,7 +148,17 @@ export interface ResponseTypeCardsType {
 }
 
 export const ApiCards = {
-    getCards(cardsPack_id:string){
+    getCards(cardsPack_id: string) {
         return axiosInstance.get<ResponseTypeCardsType>("cards/card", {params: {cardsPack_id}})
+    },
+    addCards(cardsPack_id: string, question: string) {
+        return axiosInstance.post<ResponseTypeCardsData>("cards/card", {card: {cardsPack_id, question}})
+    },
+    deleteCards(id: string) {
+        return axiosInstance.delete<ResponseTypeCardsData>("cards/card", {params: {id}})
+    },
+    putCards(_id: string, question: string){
+        return axiosInstance.put<ResponseTypeCardsData>("cards/card", {card: {_id, question}})
     }
+
 }
