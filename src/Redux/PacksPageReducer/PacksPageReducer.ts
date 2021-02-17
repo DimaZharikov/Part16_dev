@@ -13,6 +13,7 @@ export interface stateProps {
     pageSize: number
     currentPage: number
     isPrivat: boolean
+    cardPacksTotalCount: number | null
 }
 
 
@@ -23,7 +24,8 @@ const initialState: stateProps = {
     isDisabled: false,
     pageSize: 4,
     currentPage: 1,
-    isPrivat: false
+    isPrivat: false,
+    cardPacksTotalCount: null
 
 }
 
@@ -37,6 +39,8 @@ export enum ActionType {
     IS_PRIVAT = "PACKS/CHECK/IS_PRIVAT",
     SET_PAGE_SIZE = "PACKS/SET_PAGE_SIZE",
     SET_CURRENT_PAGE = "PACKS/SET_CURRENT_PAGE",
+    SET_PACKS_TOTAL_COUNT = "PACKS/SET_PACKS_TOTAL_COUNT",
+
 }
 
 
@@ -81,18 +85,23 @@ export const setCurrentPageAC = (currentPage: number): Action<number> => ({
     type: ActionType.SET_CURRENT_PAGE,
     payload: currentPage
 })
+export const setTotalCount = (cardPacksTotalCount: number): Action<number> => ({
+    type: ActionType.SET_PACKS_TOTAL_COUNT,
+    payload: cardPacksTotalCount
+})
 
 
 //thunk
 
 
-export const getPacksThunk = (pageSize:number,currentPage:number, user_id?: string) => (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>) => {
+export const getPacksThunk = (pageSize:number,currentPage:number, user_id?: string, packName?: string) => (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>) => {
     dispatch(setStatus('loading'))
-    ApiPack.getCardPacks(pageSize, currentPage, user_id)
+    ApiPack.getCardPacks(pageSize, currentPage, user_id, packName)
         .then(res => {
             console.log(res.data)
             dispatch(isDisabled(false))
             dispatch(getPacks(res.data.cardPacks))
+            dispatch(setTotalCount(res.data.cardPacksTotalCount))
             dispatch(setStatus('succeeded'))
         })
         .catch(e => {
@@ -104,6 +113,7 @@ export const getPacksThunk = (pageSize:number,currentPage:number, user_id?: stri
         })
 
 }
+
 export const addPacksThunk = (name:string) =>
     (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>, getState: () => AppRootStateType) => {
         dispatch(setStatus('loading'))
@@ -205,6 +215,8 @@ const PacksPageReducer = (state: stateProps = initialState, action: Action<Respo
             return {...state, currentPage: action.payload}
         case ActionType.IS_PRIVAT:
             return {...state, isPrivat: action.payload}
+        case ActionType.SET_PACKS_TOTAL_COUNT:
+            return {...state, cardPacksTotalCount: action.payload}
         default:
             return state
     }
@@ -213,6 +225,6 @@ const PacksPageReducer = (state: stateProps = initialState, action: Action<Respo
 
 
 type TypeActions = ReturnType<typeof getPacks> | ReturnType<typeof setStatus>
-    | ReturnType<typeof setError> | ReturnType<typeof isDisabled>
+    | ReturnType<typeof setError> | ReturnType<typeof isDisabled> | ReturnType<typeof setCurrentPageAC>
 
 export default PacksPageReducer

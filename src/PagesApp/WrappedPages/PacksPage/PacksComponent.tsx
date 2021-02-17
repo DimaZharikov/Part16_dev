@@ -19,13 +19,14 @@ const PacksComponent: FC <Props> = ({
                                         onDeletePack, cardPacks
 }) => {
 
+
+
     const dispatch = useDispatch()
-    const onSwitchedToCards = () => {
-        dispatch(getCardsThunk(cardPacks._id))
-    }
+
     const onChangeNamePack = (id: string, name: string) => {
         dispatch(onChangeNamePackThunk(id, name))
     }
+
 
 
     return (
@@ -34,9 +35,8 @@ const PacksComponent: FC <Props> = ({
                 <SuperButton onClick={() => onDeletePack(cardPacks._id)} className='btn_table'>del</SuperButton>
                 <ChangeName namePack={cardPacks.name} cardsPack_id={cardPacks._id}
                             onChangeName = {onChangeNamePack}/>
-                <NavLink to={`/cards/${cardPacks._id}`}
-                    onClick = {onSwitchedToCards}
-                > Cards </NavLink>
+                <NavLink className={style.arrow_1} to={`/cards/${cardPacks._id}`}
+                > Cards <div></div> </NavLink>
             </TableItem>
 
         </>
