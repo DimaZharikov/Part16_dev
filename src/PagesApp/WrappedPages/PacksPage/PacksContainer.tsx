@@ -3,9 +3,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     addPacksThunk,
     deletePackThunk,
-    getPacksThunk,
     setCurrentPageAC,
     seTisPrivat,
+    setPackName,
     setPageSizeAC
 } from "../../../Redux/PacksPageReducer/PacksPageReducer";
 import {AppRootStateType} from "../../../Redux/Store";
@@ -20,6 +20,7 @@ import style from './PacksContainer.module.scss'
 import SuperInputText from "../../../Components/c1-SuperInputText/SuperInputText";
 import {RangeSlider} from "./AddNewPack/Slider/Slider";
 import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
+import {HelpersGet} from "../../../Utils/Helpers/HelpersGet";
 
 
 interface Props {
@@ -40,15 +41,12 @@ const PacksContainer: FC<Props> = () => {
     const totalCount = useSelector((state: AppRootStateType) => state.packsPage.cardPacksTotalCount)
 
     useEffect(() => {
+
         if (!isLogin) {
             return
         }
-        if (isPrivat){
-            dispatch(getPacksThunk(pageSize, currentPage, userId))
-        } else {
-            dispatch(getPacksThunk(pageSize, currentPage))
-        }
-    }, [pageSize, currentPage, isPrivat, userId])
+        HelpersGet(isPrivat, dispatch,pageSize, currentPage, userId )
+    }, [pageSize, currentPage, isPrivat, userId, isLogin, dispatch])
     const onDeletePack = (id: string) => {
         dispatch(deletePackThunk(id))
     }
@@ -65,7 +63,7 @@ const PacksContainer: FC<Props> = () => {
         dispatch(seTisPrivat(!isPrivat))
     }
     const sortingPacksHandler = () => {
-        dispatch(getPacksThunk(pageSize, currentPage, userId))
+        HelpersGet(isPrivat, dispatch,pageSize, currentPage, userId )
     }
     const setPackNameHandler = (name: string) => {
         dispatch(setPackName(name))
@@ -77,16 +75,20 @@ const PacksContainer: FC<Props> = () => {
     return (
         <div className={style.main_wrapp}>
             <div className={style.setting_wrapp}>
+                <div><SuperCheckbox onChangeChecked={setIsPrivatHandler}>is Privat</SuperCheckbox></div>
                 <div className={style.input_style}>
                     Search:
                     <SuperInputText onChangeText={setPackNameHandler} placeholder={'Pack name'}/>
                 </div>
-                <div>
+                <div className={style.input_style}>
                     <RangeSlider/>
-                    <SuperButton onClick={sortingPacksHandler}>Search</SuperButton>
+
                 </div>
+
+                <div><SuperButton onClick={sortingPacksHandler}>Search</SuperButton></div>
             </div>
-            <div className={style.isPrivat}><SuperCheckbox onChangeChecked={setIsPrivatHandler}>is Privat</SuperCheckbox></div>
+            <div className={style.isPrivat}>
+            </div>
             <TableWrapper onClickHandler={onAddPack}
                           title1={'Name'}
                           title2={'Cards count'}

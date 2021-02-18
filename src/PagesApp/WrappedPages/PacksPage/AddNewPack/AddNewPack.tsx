@@ -30,7 +30,6 @@ const AddNewPack:FC<Props> = ({addNewName, disabled}) => {
                 setModal={setModal}
             >
                 <SuperInputText
-                    value={names}
                     onChangeText={setNames}
                     placeholder={'Name pack'}
                 />

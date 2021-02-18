@@ -130,11 +130,15 @@ export const getPacksThunk = (pageSize: number, currentPage: number, user_id?: s
     const maxCheckedCount = getState().packsPage.checkedCount[1]
     const packName = getState().packsPage.packName
 
+    const value = getState().packsPage.checkedCount
         ApiPack.getCardPacks(pageSize, currentPage, user_id, minCheckedCount, maxCheckedCount, packName || undefined)
             .then(res => {
-                console.log(res.data)
                 dispatch(isDisabled(false))
+                dispatch(setTotalCount(res.data.cardPacksTotalCount))
                 dispatch(getPacks(res.data.cardPacks))
+                if (value[1] > res.data.maxCardsCount) {
+                    dispatch(setCheckedCount([res.data.minCardsCount, res.data.maxCardsCount]));
+                }
                 dispatch(setCardsCount(res.data.minCardsCount, res.data.maxCardsCount))
                 dispatch(setStatus('succeeded'))
             })
@@ -252,6 +256,8 @@ const PacksPageReducer = (state: stateProps = initialState, action: Action<Respo
             return {...state, checkedCount: action.payload}
         case ActionType.SET_CARDS_COUNT:
             return {...state,cardsCount: action.payload}
+        case ActionType.SET_PACKS_TOTAL_COUNT:
+            return {...state, cardPacksTotalCount: action.payload}
         default:
             return state
     }
@@ -262,6 +268,6 @@ const PacksPageReducer = (state: stateProps = initialState, action: Action<Respo
 type TypeActions = ReturnType<typeof getPacks> | ReturnType<typeof setStatus>
     | ReturnType<typeof setError> | ReturnType<typeof isDisabled> | ReturnType<typeof setPackName> | ReturnType<typeof setCheckedCount>
 | ReturnType<typeof setCardsCount>
-    | ReturnType<typeof setError> | ReturnType<typeof isDisabled> | ReturnType<typeof setCurrentPageAC>
+    | ReturnType<typeof setError> | ReturnType<typeof isDisabled> | ReturnType<typeof setCurrentPageAC>| ReturnType<typeof setTotalCount>
 
 export default PacksPageReducer

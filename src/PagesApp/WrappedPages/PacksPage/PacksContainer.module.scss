@@ -1,5 +1,7 @@
 .isPrivat{
 	margin-left: 40px;
+	display: flex;
+	justify-content: space-between;
 }
 .main_wrapp{
 	margin: 0 auto;
@@ -10,17 +12,19 @@
 		padding: 0 20px;
 		width: 100%;
 		display: flex;
-		justify-content: space-between;
+		justify-content: space-around;
 	}
 }
 
 .input_style {
 	max-width: 500px;
+	min-width: 300px;
+	text-align: center;
 }
 
 .setting_wrapp {
-	margin: 0px 10px;
-	min-height: 100px;
+	margin: 0 10px;
+
 	display: flex;
 	align-items: center;
 	justify-content: space-around;
