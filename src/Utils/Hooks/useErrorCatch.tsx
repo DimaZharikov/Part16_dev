@@ -5,11 +5,11 @@ import {Dispatch} from "react";
 
 const UseErrorCatch = (e:any, dispatch: Dispatch<any>) => {
 
-    const error = e.response.data.error
+    const error =  e.response
         ? e.response.data.error
-        : 'checkError'
-    // console.log(error)
-    // console.log('errors:', {...e})
+        : (e.message + ', more details in the console');
+    console.log(error)
+    console.log('errors:', {...e})
     dispatch(setError(error))
     dispatch(setStatus('failed'))
 
