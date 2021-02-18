@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {FC, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {
     addPacksThunk,
@@ -17,7 +17,8 @@ import Spinner from "../../../Common/preloader/Spinner";
 import SuperCheckbox from "../../../Components/c3-SuperCheckbox/SuperCheckbox";
 import {Redirect} from "react-router-dom";
 import style from './PacksContainer.module.scss'
-import SearchPanel from "../../../Components/SerchPanel/SerchPanel";
+import SuperInputText from "../../../Components/c1-SuperInputText/SuperInputText";
+import {RangeSlider} from "./AddNewPack/Slider/Slider";
 import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
 
 
@@ -29,7 +30,7 @@ const PacksContainer: FC<Props> = () => {
 
     const totalCoutnOptions = ['4', '7', '10', '20', '50']
     const pageSize = useSelector((state: AppRootStateType) => state.packsPage.pageSize)
-    const currentPage = useSelector((state: AppRootStateType) => state.packsPage.currentPage)
+    const currentPage= useSelector((state: AppRootStateType) => state.packsPage.currentPage)
     const cardPacks = useSelector((state: AppRootStateType) => state.packsPage.cardPacks)
     const status = useSelector((state: AppRootStateType) => state.packsPage.status)
     const isPrivat = useSelector((state: AppRootStateType) => state.packsPage.isPrivat)
@@ -38,25 +39,16 @@ const PacksContainer: FC<Props> = () => {
     const profile = useSelector((state: AppRootStateType) => state.profile.profile)
     const totalCount = useSelector((state: AppRootStateType) => state.packsPage.cardPacksTotalCount)
 
-    const [searchValue, setSearchValue] = useState<string>('')
-    const [searchValueInput, setSearchValueInput] = useState<string>('')
     useEffect(() => {
         if (!isLogin) {
             return
         }
-        if (isPrivat) {
-            if (searchValue && searchValue !== '') {
-                dispatch(getPacksThunk(pageSize, currentPage, userId, searchValue))
-            } else {
-                dispatch(getPacksThunk(pageSize, currentPage, userId))
-            }
-
-        } else if (searchValue && searchValue !== '') {
-            dispatch(getPacksThunk(pageSize, currentPage, undefined, searchValue))
+        if (isPrivat){
+            dispatch(getPacksThunk(pageSize, currentPage, userId))
         } else {
             dispatch(getPacksThunk(pageSize, currentPage))
         }
-    }, [pageSize, currentPage, isPrivat, userId, searchValue, dispatch, isLogin])
+    }, [pageSize, currentPage, isPrivat, userId])
     const onDeletePack = (id: string) => {
         dispatch(deletePackThunk(id))
     }
@@ -66,19 +58,17 @@ const PacksContainer: FC<Props> = () => {
     const onPageChangeHandler = (pageNumber: number) => {
         dispatch(setCurrentPageAC(pageNumber))
     }
-    const onAddPack = (name: string) => {
+    const onAddPack = (name:string) => {
         dispatch(addPacksThunk(name))
     }
     const setIsPrivatHandler = () => {
         dispatch(seTisPrivat(!isPrivat))
     }
-    const onSearchHandler = () => {
-        setSearchValue(searchValueInput)
+    const sortingPacksHandler = () => {
+        dispatch(getPacksThunk(pageSize, currentPage, userId))
     }
-    const resetHandler = () => {
-        setSearchValue('')
-        setSearchValueInput('')
-        dispatch(seTisPrivat(false))
+    const setPackNameHandler = (name: string) => {
+        dispatch(setPackName(name))
     }
 
     if (!isLogin || !profile) {
@@ -86,21 +76,22 @@ const PacksContainer: FC<Props> = () => {
     }
     return (
         <div className={style.main_wrapp}>
-            <div className={style.search_panel_main}>
-                <SearchPanel placeholderInput={'Search Name'} onSearch={setSearchValueInput}
-                             value={searchValueInput}
-                             classNameInput={'search_panel'}
-                />
-                <SuperButton onClick={onSearchHandler} disabled={status === 'loading'}>Search</SuperButton>
-                <SuperButton onClick={resetHandler} disabled={searchValueInput === ''}>reset</SuperButton>
+            <div className={style.setting_wrapp}>
+                <div className={style.input_style}>
+                    Search:
+                    <SuperInputText onChangeText={setPackNameHandler} placeholder={'Pack name'}/>
+                </div>
+                <div>
+                    <RangeSlider/>
+                    <SuperButton onClick={sortingPacksHandler}>Search</SuperButton>
+                </div>
             </div>
-            <div className={style.isPrivat}><SuperCheckbox checked={isPrivat} onChangeChecked={setIsPrivatHandler}>is
-                Privat</SuperCheckbox></div>
+            <div className={style.isPrivat}><SuperCheckbox onChangeChecked={setIsPrivatHandler}>is Privat</SuperCheckbox></div>
             <TableWrapper onClickHandler={onAddPack}
                           title1={'Name'}
                           title2={'Cards count'}
                           title3={'Updated'}
-                            disabled={status === 'loading'}>
+                          disabled={status === 'loading'}>
                 {
                     status === 'loading'
                         ? <Spinner/>

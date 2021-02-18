@@ -13,6 +13,9 @@ export interface stateProps {
     pageSize: number
     currentPage: number
     isPrivat: boolean
+    cardsCount: {minCardsCount: number, maxCardsCount: number}
+    checkedCount: number[]
+    packName: null | string
     cardPacksTotalCount: number | null
 }
 
@@ -25,8 +28,10 @@ const initialState: stateProps = {
     pageSize: 4,
     currentPage: 1,
     isPrivat: false,
-    cardPacksTotalCount: null
-
+    cardPacksTotalCount: null,
+    cardsCount: {minCardsCount: 0, maxCardsCount: 50},
+    checkedCount:[0, 50],
+    packName: null
 }
 
 
@@ -40,7 +45,9 @@ export enum ActionType {
     SET_PAGE_SIZE = "PACKS/SET_PAGE_SIZE",
     SET_CURRENT_PAGE = "PACKS/SET_CURRENT_PAGE",
     SET_PACKS_TOTAL_COUNT = "PACKS/SET_PACKS_TOTAL_COUNT",
-
+    SET_PACK_NAME = "SET/PACK_NAME",
+    SET_COUNT_RENGE = "SET/COUNT_RENGE",
+    SET_CARDS_COUNT = "SET/CARDS_COUNT"
 }
 
 
@@ -51,6 +58,8 @@ interface Action<T> {
     payload: T
 
 }
+
+
 
 export const getPacks = (data: ResponseTypeCardsPacksData[]): Action<ResponseTypeCardsPacksData[]> => ({
     type: ActionType.GET_PACKS,
@@ -90,30 +99,52 @@ export const setTotalCount = (cardPacksTotalCount: number): Action<number> => ({
     payload: cardPacksTotalCount
 })
 
+export const setPackName = (name: string) => ({
+    type: ActionType.SET_PACK_NAME,
+        payload: name
+})
+
+export const setCheckedCount = (count: Array<number> | number) => ({
+    type: ActionType.SET_COUNT_RENGE,
+    payload: count
+})
+
+ const setCardsCount = (minCardsCount: number,  maxCardsCount: number) => ({
+    type: ActionType.SET_CARDS_COUNT,
+    payload: {
+        minCardsCount: minCardsCount,
+        maxCardsCount: maxCardsCount
+    }
+})
+
+
 
 //thunk
 
 
-export const getPacksThunk = (pageSize:number,currentPage:number, user_id?: string, packName?: string) => (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>) => {
+export const getPacksThunk = (pageSize: number, currentPage: number, user_id?: string) => (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>, getState: () => AppRootStateType) => {
     dispatch(setStatus('loading'))
-    ApiPack.getCardPacks(pageSize, currentPage, user_id, packName)
-        .then(res => {
-            console.log(res.data)
-            dispatch(isDisabled(false))
-            dispatch(getPacks(res.data.cardPacks))
-            dispatch(setTotalCount(res.data.cardPacksTotalCount))
-            dispatch(setStatus('succeeded'))
-        })
-        .catch(e => {
-            UseErrorCatch(e, dispatch)
+    const pageSize = getState().packsPage.pageSize
+    const currentPage = getState().packsPage.currentPage
+    const minCheckedCount = getState().packsPage.checkedCount[0]
+    const maxCheckedCount = getState().packsPage.checkedCount[1]
+    const packName = getState().packsPage.packName
 
-        })
-        .finally(() => {
-            dispatch(setStatus('succeeded'))
-        })
-
+        ApiPack.getCardPacks(pageSize, currentPage, user_id, minCheckedCount, maxCheckedCount, packName || undefined)
+            .then(res => {
+                console.log(res.data)
+                dispatch(isDisabled(false))
+                dispatch(getPacks(res.data.cardPacks))
+                dispatch(setCardsCount(res.data.minCardsCount, res.data.maxCardsCount))
+                dispatch(setStatus('succeeded'))
+            })
+            .catch(e => {
+                UseErrorCatch(e, dispatch)
+            })
+            .finally(() => {
+                dispatch(setStatus('succeeded'))
+            })
 }
-
 export const addPacksThunk = (name:string) =>
     (dispatch: ThunkDispatch<AppRootStateType, {}, TypeActions>, getState: () => AppRootStateType) => {
         dispatch(setStatus('loading'))
@@ -167,7 +198,8 @@ export const onChangeNamePackThunk = ( _id: string, name: string) =>
         const isPrivat = getState().packsPage.isPrivat
         const profile = getState().profile.profile
         ApiPack.putCardPack({_id,name})
-            .then (()=> {
+            .then ((res)=> {
+                console.log(res)
                 if(isPrivat && profile) {
                     dispatch(getPacksThunk(pageSize,currentPage, profile._id))
                 } else {
@@ -214,8 +246,12 @@ const PacksPageReducer = (state: stateProps = initialState, action: Action<Respo
             return {...state, currentPage: action.payload}
         case ActionType.IS_PRIVAT:
             return {...state, isPrivat: action.payload}
-        case ActionType.SET_PACKS_TOTAL_COUNT:
-            return {...state, cardPacksTotalCount: action.payload}
+        case ActionType.SET_PACK_NAME:
+            return {...state, packName: action.payload}
+        case ActionType.SET_COUNT_RENGE:
+            return {...state, checkedCount: action.payload}
+        case ActionType.SET_CARDS_COUNT:
+            return {...state,cardsCount: action.payload}
         default:
             return state
     }
@@ -224,6 +260,8 @@ const PacksPageReducer = (state: stateProps = initialState, action: Action<Respo
 
 
 type TypeActions = ReturnType<typeof getPacks> | ReturnType<typeof setStatus>
+    | ReturnType<typeof setError> | ReturnType<typeof isDisabled> | ReturnType<typeof setPackName> | ReturnType<typeof setCheckedCount>
+| ReturnType<typeof setCardsCount>
     | ReturnType<typeof setError> | ReturnType<typeof isDisabled> | ReturnType<typeof setCurrentPageAC>
 
 export default PacksPageReducer

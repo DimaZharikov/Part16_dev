@@ -38,7 +38,7 @@ export type ResponseTypeRegistration = {
 }
 
 
-export interface ResponseTypeCardsPacksData {
+export interface ResponseTypeCardsPacksData  {
     _id: string,
     userId: string,
     name: string,
@@ -94,7 +94,7 @@ export const ApiAuth = {
     }
 
 
-}
+    }
 
 
 export const ApiRegistration = {
@@ -105,8 +105,8 @@ export const ApiRegistration = {
 
 
 export const ApiPack = {
-    getCardPacks(pageCount: number, page: number, user_id?: string, packName?:string) {
-        return axiosInstance.get<ResponseTypeCardsPacks>(`cards/pack`, {params: {page, pageCount, user_id, packName}})
+    getCardPacks(pageCount:number,page: number, user_id?:string,  min?: number, max?: number, packName?: string) {
+        return axiosInstance.get<ResponseTypeCardsPacks>(`cards/pack`, {params: {page, pageCount, user_id, min, max, packName}})
     },
     addCardPacks(body: { name: string }) {
         return axiosInstance.post<ResponseTypeCardsPacksData>(`cards/pack`, {cardsPack: body})
