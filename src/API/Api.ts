@@ -104,8 +104,8 @@ export const ApiRegistration = {
 
 
 export const ApiPack = {
-    getCardPacks(pageCount:number,page: number, user_id?:string) {
-        return axiosInstance.get<ResponseTypeCardsPacks>(`cards/pack`, {params: {page, pageCount, user_id}})
+    getCardPacks(pageCount:number,page: number, user_id?:string,  min?: number, max?: number, packName?: string) {
+        return axiosInstance.get<ResponseTypeCardsPacks>(`cards/pack`, {params: {page, pageCount, user_id, min, max, packName}})
     },
     addCardPacks(body: {name:string}) {
         return axiosInstance.post<ResponseTypeCardsPacksData>(`cards/pack`, {cardsPack: body})
@@ -116,7 +116,6 @@ export const ApiPack = {
     putCardPack (body: {_id: string, name: string}) {
         return axiosInstance.put<ResponseTypeCardsPacksData>(`cards/pack`, {cardsPack: body})
     }
-
 }
 
 

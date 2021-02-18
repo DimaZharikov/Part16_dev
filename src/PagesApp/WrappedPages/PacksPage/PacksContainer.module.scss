@@ -4,3 +4,21 @@
 .main_wrapp{
 	margin: 0 auto;
 }
+
+.input_style {
+	max-width: 500px;
+}
+
+.setting_wrapp {
+	margin: 0px 10px;
+	min-height: 100px;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.slider_wrapp {
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}

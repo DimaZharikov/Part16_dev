@@ -5,7 +5,7 @@ import {
     deletePackThunk,
     getPacksThunk,
     setCurrentPageAC,
-    seTisPrivat,
+    seTisPrivat, setPackName,
     setPageSizeAC
 } from "../../../Redux/PacksPageReducer/PacksPageReducer";
 import {AppRootStateType} from "../../../Redux/Store";
@@ -17,6 +17,9 @@ import Spinner from "../../../Common/preloader/Spinner";
 import SuperCheckbox from "../../../Components/c3-SuperCheckbox/SuperCheckbox";
 import {Redirect} from "react-router-dom";
 import style from './PacksContainer.module.scss'
+import SuperInputText from "../../../Components/c1-SuperInputText/SuperInputText";
+import {RangeSlider} from "./AddNewPack/Slider/Slider";
+import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
 
 
 interface Props {
@@ -57,11 +60,28 @@ const PacksContainer: FC<Props> = () => {
     const setIsPrivatHandler = () => {
         dispatch(seTisPrivat(!isPrivat))
     }
+    const sortingPacksHandler = () => {
+        dispatch(getPacksThunk(pageSize, currentPage, userId))
+    }
+    const setPackNameHandler = (name: string) => {
+        dispatch(setPackName(name))
+    }
+
     if (!isLogin || !profile) {
         return <Redirect to={'/auth'}/>
     }
     return (
         <div className={style.main_wrapp}>
+            <div className={style.setting_wrapp}>
+                <div className={style.input_style}>
+                    Search:
+                    <SuperInputText onChangeText={setPackNameHandler} placeholder={'Pack name'}/>
+                </div>
+                <div>
+                    <RangeSlider/>
+                    <SuperButton onClick={sortingPacksHandler}>Search</SuperButton>
+                </div>
+            </div>
             <div className={style.isPrivat}><SuperCheckbox onChangeChecked={setIsPrivatHandler}>is Privat</SuperCheckbox></div>
             <TableWrapper onClickHandler={onAddPack}>
                 {

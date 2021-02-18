@@ -5,8 +5,8 @@ import {Dispatch} from "react";
 
 const UseErrorCatch = (e:any, dispatch: Dispatch<any>) => {
 
-    const error = e.response.error
-        ? e.response.error
+    const error = !e.response
+        ? e.message
         : (e.response.error + 'checkError')
     console.log(error)
     console.log('errors:', {...e})
