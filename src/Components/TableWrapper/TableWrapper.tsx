@@ -8,11 +8,12 @@ interface Props {
     title1: string
     title2:string
     title3:string
+    disabled?: boolean
 }
 
 
 
-const TableWrapper: FC<Props> = ({children, onClickHandler, title1, title2, title3}) => {
+const TableWrapper: FC<Props> = ({children, onClickHandler, title1, title2, title3, disabled}) => {
     const addNewName = (name:string) => {
         onClickHandler && onClickHandler(name)
     }
@@ -24,7 +25,7 @@ const TableWrapper: FC<Props> = ({children, onClickHandler, title1, title2, titl
                     <div className={style.title_item}>{title2}</div>
                     <div className={style.title_item}>{title3}</div>
                     <div className={style.title_item}>
-                       <AddNewPack addNewName={addNewName}/>
+                       <AddNewPack addNewName={addNewName} disabled={disabled ? disabled : false}/>
                     </div>
 
                 </div>

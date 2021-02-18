@@ -17,7 +17,7 @@ import Spinner from "../../../Common/preloader/Spinner";
 import SuperCheckbox from "../../../Components/c3-SuperCheckbox/SuperCheckbox";
 import {Redirect} from "react-router-dom";
 import style from './PacksContainer.module.scss'
-import SerchPanel from "../../../Components/SerchPanel/SerchPanel";
+import SearchPanel from "../../../Components/SerchPanel/SerchPanel";
 import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
 
 
@@ -38,13 +38,16 @@ const PacksContainer: FC<Props> = () => {
     const profile = useSelector((state: AppRootStateType) => state.profile.profile)
     const totalCount = useSelector((state: AppRootStateType) => state.packsPage.cardPacksTotalCount)
 
-    const [searchValue, setSearchValue] = useState<string>()
-
+    const [searchValue, setSearchValue] = useState<string>('')
+    const [searchValueInput, setSearchValueInput] = useState<string>('')
     useEffect(() => {
+        if (!isLogin) {
+            return
+        }
         if (isPrivat) {
             if (searchValue && searchValue !== '') {
                 dispatch(getPacksThunk(pageSize, currentPage, userId, searchValue))
-            }else {
+            } else {
                 dispatch(getPacksThunk(pageSize, currentPage, userId))
             }
 
@@ -53,7 +56,7 @@ const PacksContainer: FC<Props> = () => {
         } else {
             dispatch(getPacksThunk(pageSize, currentPage))
         }
-    }, [pageSize, currentPage, isPrivat, userId, searchValue])
+    }, [pageSize, currentPage, isPrivat, userId, searchValue, dispatch, isLogin])
     const onDeletePack = (id: string) => {
         dispatch(deletePackThunk(id))
     }
@@ -69,11 +72,13 @@ const PacksContainer: FC<Props> = () => {
     const setIsPrivatHandler = () => {
         dispatch(seTisPrivat(!isPrivat))
     }
-    const onSerchHandler = (value: string) => {
-        setSearchValue(value)
+    const onSearchHandler = () => {
+        setSearchValue(searchValueInput)
     }
     const resetHandler = () => {
         setSearchValue('')
+        setSearchValueInput('')
+        dispatch(seTisPrivat(false))
     }
 
     if (!isLogin || !profile) {
@@ -82,14 +87,20 @@ const PacksContainer: FC<Props> = () => {
     return (
         <div className={style.main_wrapp}>
             <div className={style.search_panel_main}>
-                <SerchPanel placeholderInput={'Serch Name'} onSerch={onSerchHandler} placeholderBtn={'Serch'}
-                            classNameInput={'search_panel'}
+                <SearchPanel placeholderInput={'Search Name'} onSearch={setSearchValueInput}
+                             value={searchValueInput}
+                             classNameInput={'search_panel'}
                 />
-                <SuperButton onClick={resetHandler}>reset</SuperButton>
+                <SuperButton onClick={onSearchHandler} disabled={status === 'loading'}>Search</SuperButton>
+                <SuperButton onClick={resetHandler} disabled={searchValueInput === ''}>reset</SuperButton>
             </div>
-            <div className={style.isPrivat}><SuperCheckbox onChangeChecked={setIsPrivatHandler}>is
+            <div className={style.isPrivat}><SuperCheckbox checked={isPrivat} onChangeChecked={setIsPrivatHandler}>is
                 Privat</SuperCheckbox></div>
-            <TableWrapper onClickHandler={onAddPack} title1={'Name'} title2={'Cards count'} title3={'Updated'}>
+            <TableWrapper onClickHandler={onAddPack}
+                          title1={'Name'}
+                          title2={'Cards count'}
+                          title3={'Updated'}
+                            disabled={status === 'loading'}>
                 {
                     status === 'loading'
                         ? <Spinner/>

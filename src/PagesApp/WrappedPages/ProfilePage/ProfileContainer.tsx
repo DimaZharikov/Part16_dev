@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, {FC, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AppRootStateType} from "../../../Redux/Store";
 import {Link, Redirect} from "react-router-dom";
@@ -18,8 +18,10 @@ const ProfileContainer: FC<Props> = () => {
     const status = useSelector((state: AppRootStateType) => state.auth.status)
     const errorMes = useSelector((state: AppRootStateType) => state.auth.errorMes)
     const dispatch = useDispatch();
-    console.log(document.cookie)
 
+    useEffect(() => {
+
+    })
 
     if (!isLogin || !profile) {
         return <Redirect to={'/auth'}/>

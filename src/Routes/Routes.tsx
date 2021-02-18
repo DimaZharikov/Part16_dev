@@ -35,7 +35,7 @@ const Routes : FC = () => {
                 <Route exact path = {RoutingType.resPass} render = {()=> <ResPasswordContainer/>}/>
                 <Route path = {RoutingType.newPass} render = {()=> <NewPasswordContainer/>}/>
                 <Route  exact path = {RoutingType.packs} render = {()=> <PacksContainer/>}/>
-                <Route path = {`${RoutingType.cards}/:cardId`} render = {()=> <CardsPageContainer/>}/>
+                <Route exact path  = {`${RoutingType.cards}/:cardId`} render = {()=> <CardsPageContainer/>}/>
                 <Route path={RoutingType.error} render={()=> <ErrorContainer/>}/>
                 <Redirect from={'*'} to={RoutingType.error}/>
             </Switch>

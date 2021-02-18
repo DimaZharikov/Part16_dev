@@ -16,9 +16,7 @@ interface Props {
 
 }
 
-const RegistrationContainer: FC<Props> = ({
-                                              ...props
-                                          }) => {
+const RegistrationContainer: FC<Props> = () => {
     //reducer variable
     const isRegistration = useSelector<AppRootStateType, boolean>(state => state.registration.isRegistration);
     const status = useSelector<AppRootStateType, RequestStatusType>(state => state.registration.status);
@@ -132,7 +130,6 @@ const RegistrationContainer: FC<Props> = ({
             <h2>E-mail:</h2>
             <Paper>
                 <SuperInputText
-                    value={email}
                     onChangeText={isValidateEmailReg}
                     error={isValidEmail}
                     placeholder={'E-mail'}
@@ -149,7 +146,6 @@ const RegistrationContainer: FC<Props> = ({
                 <h2>Password:</h2>
             <Paper>
                 <SuperInputText
-                    value={password}
                     onChangeText={validatePassword}
                     error={isValidPassword}
                     placeholder={'Password'}
@@ -168,7 +164,6 @@ const RegistrationContainer: FC<Props> = ({
             <h2>Confirm Password:</h2>
             <Paper>
                 <SuperInputText
-                    value={confirmPassword}
                     onChangeText={validateConfirmPassword}
                     error={isValidConfirmPassword}
                     placeholder={'Confirm Password'}

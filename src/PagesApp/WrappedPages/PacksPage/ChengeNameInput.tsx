@@ -7,7 +7,6 @@ interface Props {
     errorMes?: string,
     namePack: string,
     cardsPack_id: string,
-
     onChangeName: (id: string, name:string) => void
 }
 

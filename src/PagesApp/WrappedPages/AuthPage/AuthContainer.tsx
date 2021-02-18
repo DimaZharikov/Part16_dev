@@ -28,7 +28,7 @@ const AuthContainer: FC<Props> = () => {
     const isLogin = useSelector((state: AppRootStateType) => state.auth.isLogin)
     const status = useSelector((state: AppRootStateType) => state.auth.status)
     const errordata = useSelector((state: AppRootStateType) => state.auth.errorMes)
-    console.log(errordata)
+
     const dispatch = useDispatch()
     const validateInputLog = (value: string) => {
         setEmail(value)

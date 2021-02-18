@@ -6,21 +6,25 @@ import SuperButton from "../../../../Components/c2-SuperButton/SuperButton";
 
 interface Props{
     addNewName: (name:string) => void
+    disabled:boolean
 }
 
-const AddNewPack:FC<Props> = (props) => {
+const AddNewPack:FC<Props> = ({addNewName, disabled}) => {
     const [names, setNames] = useState<string>()
+
     const [modal, setModal] = useState<boolean>(false)
     const changeNameHandler = () => {
         if (names) {
-            props.addNewName(names)
+            addNewName(names)
             setModal(false)
             setNames('')
         }
     }
     return (
         <>
-            <SuperButton onClick={() => setModal(true)}>Add</SuperButton>
+            <SuperButton
+                disabled={disabled}
+                onClick={() => setModal(true)}>Add</SuperButton>
             <Modal
                 modal={modal}
                 setModal={setModal}

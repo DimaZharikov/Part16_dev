@@ -1,38 +1,28 @@
-import React, { FC, useState } from 'react';
+import React, {FC} from 'react';
 import SuperInputText from '../c1-SuperInputText/SuperInputText';
-import SuperButton from '../c2-SuperButton/SuperButton';
 
 interface Props {
-    onSerch: (value:string) => void
+    onSearch: (value:string) => void
     placeholderInput: string
-    placeholderBtn: string
     classNameInput: string
-
+    value:string | ''
 }
 
 
 
-const SerchPanel:FC<Props> = ({onSerch, placeholderInput, placeholderBtn, classNameInput}) => {
-    const [name, setName] = useState<string>('')
+const SearchPanel:FC<Props> = ({onSearch, placeholderInput,value,  classNameInput}) => {
 
-    const changeNameHandler = () => {
-        if (name) {
-            onSerch(name)
-        } else {
-            setName('')
-        }
-    }
 
     return (
         <>
             <SuperInputText
-                onChangeText={setName}
+                value={value}
+                onChangeText={onSearch}
                 placeholder={placeholderInput}
                 className={classNameInput}
             />
-            <SuperButton onClick={changeNameHandler}>{placeholderBtn}</SuperButton>
         </>
     );
 };
 
-export default SerchPanel;
+export default SearchPanel;

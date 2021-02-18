@@ -76,6 +76,9 @@ export const getCardsThunk = (pageSize:number,currentPage:number, cardsPack_id: 
     ApiCards.getCards(cardsPack_id, pageSize, currentPage)
         .then((res) => {
             console.log('cards:', res.data.cards)
+
+
+
             dispatch(setCards(res.data.cards))
             dispatch(setStatus('succeeded'))
         })

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, DetailedHTMLProps, InputHTMLAttributes, KeyboardEvent, useState} from "react";
+import React, {ChangeEvent, DetailedHTMLProps, InputHTMLAttributes, KeyboardEvent, ReactNode, useState} from "react";
 import s from "./SuperInputText.module.css";
 
 // тип пропсов обычного инпута
@@ -14,6 +14,7 @@ type SuperInputTextPropsType = DefaultInputPropsType & { // и + ещё проп
     errorMes?: string
     setError?:(value:boolean) => void
     className?:string
+    children?: ReactNode
 };
 
 const SuperInputText: React.FC<SuperInputTextPropsType> = (
@@ -64,6 +65,7 @@ const SuperInputText: React.FC<SuperInputTextPropsType> = (
             <input
                 type={type ? type : 'text'}
                 onChange={onChangeCallback}
+                value={value}
                 onKeyPress={onKeyPressCallback}
                 className={finalInputClassName}
                 onBlur={ onBlurHandler}

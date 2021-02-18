@@ -73,8 +73,7 @@ export const setLoginT = (email: string, password: string, rememberMe: boolean):
 export const setLogOut = (): AppThunk => (dispatch) => {
     dispatch(setStatusAC('loading'))
     ApiAuth.logOut()
-        .then(res => {
-            console.log(res)
+        .then(() => {
             dispatch(setErrorMes(''))
             dispatch(setLoginAC(false))
             dispatch(setStatusAC('succeeded'))
@@ -94,7 +93,6 @@ export const setAuthMe = (): AppThunk => (dispatch) => {
     dispatch(setStatusAC('loading'))
     ApiAuth.authMe()
         .then(res => {
-            console.log(res)
             dispatch(setErrorMes(''))
             dispatch(setProfileAc(res.data))
             dispatch(setLoginAC(true))
@@ -118,7 +116,6 @@ export const setChangeName = (name: string): AppThunk => (dispatch) => {
     dispatch(setStatusAC('loading'))
     ApiAuth.changeName(name)
         .then(res => {
-            console.log(res)
             dispatch(setErrorMes(''))
             dispatch(setProfileAc(res.data.updatedUser))
             dispatch(setStatusAC('succeeded'))

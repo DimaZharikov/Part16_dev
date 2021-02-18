@@ -167,8 +167,7 @@ export const onChangeNamePackThunk = ( _id: string, name: string) =>
         const isPrivat = getState().packsPage.isPrivat
         const profile = getState().profile.profile
         ApiPack.putCardPack({_id,name})
-            .then ((res)=> {
-                console.log(res)
+            .then (()=> {
                 if(isPrivat && profile) {
                     dispatch(getPacksThunk(pageSize,currentPage, profile._id))
                 } else {
