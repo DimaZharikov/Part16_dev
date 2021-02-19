@@ -3,7 +3,7 @@ import {setError, setStatus} from "../../Redux/PacksPageReducer/PacksPageReducer
 
 import {Dispatch} from "react";
 
-const UseErrorCatch = (e:any, dispatch: Dispatch<any>) => {
+const HelperErrorCatch = (e:any, dispatch: Dispatch<any>) => {
 
     const error =  e.response
         ? e.response.data.error
@@ -16,4 +16,4 @@ const UseErrorCatch = (e:any, dispatch: Dispatch<any>) => {
 
 };
 
-export default UseErrorCatch;
+export default HelperErrorCatch;

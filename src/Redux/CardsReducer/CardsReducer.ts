@@ -2,7 +2,7 @@ import {ApiCards, ResponseTypeCardsData} from "../../API/Api";
 import {ThunkDispatch} from "redux-thunk";
 import {AppRootStateType} from "../Store";
 import {RequestStatusType} from "../AuthReducer/AuthReducer";
-import UseErrorCatch from "../../Utils/Hooks/useErrorCatch";
+import HelperErrorCatch from "../../Utils/Helpers/HelperErrorCatch";
 
 
 export interface stateProps {
@@ -83,7 +83,7 @@ export const getCardsThunk = (pageSize:number,currentPage:number, cardsPack_id: 
             dispatch(setStatus('succeeded'))
         })
         .catch((e) => {
-            UseErrorCatch(e, dispatch)
+            HelperErrorCatch(e, dispatch)
         })
         .finally(() => {
         dispatch(setStatus('succeeded'))
@@ -100,7 +100,7 @@ export const addCardsThunk = (cardsPack_id: string, question: string) =>
                 dispatch(getCardsThunk(pageSize, currentPage, cardsPack_id))
             })
             .catch((e) => {
-                UseErrorCatch(e, dispatch)
+                HelperErrorCatch(e, dispatch)
             })
 
     }
@@ -116,7 +116,7 @@ export const deleteCardsThunk = (cardsPack_id: string,_id: string) =>
                 dispatch(getCardsThunk(pageSize, currentPage, cardsPack_id))
             })
             .catch(e => {
-                UseErrorCatch(e, dispatch)
+                HelperErrorCatch(e, dispatch)
             })
     }
 
@@ -131,7 +131,7 @@ export const deleteCardsThunk = (cardsPack_id: string,_id: string) =>
                     dispatch(getCardsThunk(pageSize, currentPage, cardsPack_id))
                 })
                 .catch(e => {
-                UseErrorCatch(e, dispatch)
+                HelperErrorCatch(e, dispatch)
             })
         }
 

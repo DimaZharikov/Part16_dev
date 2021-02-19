@@ -1,4 +1,5 @@
 import axios from "axios";
+import {SortArrowValues} from "../Redux/PacksPageReducer/PacksPageReducer";
 
 
 //first deploy at 10.02.21
@@ -105,8 +106,8 @@ export const ApiRegistration = {
 
 
 export const ApiPack = {
-    getCardPacks(pageCount:number,page: number, user_id?:string,  min?: number, max?: number, packName?: string) {
-        return axiosInstance.get<ResponseTypeCardsPacks>(`cards/pack`, {params: {page, pageCount, user_id, min, max, packName}})
+    getCardPacks(pageCount:number,page: number, user_id?:string,  min?: number, max?: number, packName?: string, sortPacks?:SortArrowValues) {
+        return axiosInstance.get<ResponseTypeCardsPacks>(`cards/pack`, {params: {page, pageCount, user_id, min, max, packName, sortPacks}})
     },
     addCardPacks(body: { name: string }) {
         return axiosInstance.post<ResponseTypeCardsPacksData>(`cards/pack`, {cardsPack: body})

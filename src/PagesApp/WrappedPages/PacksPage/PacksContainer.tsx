@@ -68,6 +68,12 @@ const PacksContainer: FC<Props> = () => {
     const setPackNameHandler = (name: string) => {
         dispatch(setPackName(name))
     }
+    const sortUpArrow = () => {
+        HelpersGet(isPrivat, dispatch,pageSize, currentPage, userId )
+    }
+    const sortDownArrow = () => {
+        HelpersGet(isPrivat, dispatch,pageSize, currentPage, userId )
+    }
 
     if (!isLogin || !profile) {
         return <Redirect to={'/auth'}/>
@@ -85,7 +91,7 @@ const PacksContainer: FC<Props> = () => {
 
                 </div>
 
-                <div><SuperButton onClick={sortingPacksHandler}>Search</SuperButton></div>
+                <div><SuperButton onClick={sortingPacksHandler} disabled={status === 'loading'}>Search</SuperButton></div>
             </div>
             <div className={style.isPrivat}>
             </div>
@@ -93,7 +99,10 @@ const PacksContainer: FC<Props> = () => {
                           title1={'Name'}
                           title2={'Cards count'}
                           title3={'Updated'}
-                          disabled={status === 'loading'}>
+                          disabled={status === 'loading'}
+                          onClickUpHandlerSort={sortUpArrow}
+                          onClickDownHandlerSort={sortDownArrow}
+            >
                 {
                     status === 'loading'
                         ? <Spinner/>

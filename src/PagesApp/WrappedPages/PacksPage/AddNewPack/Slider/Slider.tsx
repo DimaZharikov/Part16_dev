@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
@@ -19,7 +19,7 @@ export const RangeSlider = () => {
     const dispatch = useDispatch()
     const cardsCount = useSelector((state: AppRootStateType) => state.packsPage.cardsCount)
     const value = useSelector((state: AppRootStateType) => state.packsPage.checkedCount)
-    const status = useSelector((state: AppRootStateType) => state.packsPage.status)
+
     const valuetext = (value: number) => {
         return `${value}`;
     }

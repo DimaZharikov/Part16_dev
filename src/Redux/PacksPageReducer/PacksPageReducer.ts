@@ -2,7 +2,7 @@ import {ApiPack, ResponseTypeCardsPacksData} from "../../API/Api";
 import {RequestStatusType} from "../AuthReducer/AuthReducer";
 import {ThunkDispatch} from "redux-thunk";
 import {AppRootStateType} from "../Store";
-import UseErrorCatch from "../../Utils/Hooks/useErrorCatch";
+import HelperErrorCatch from "../../Utils/Helpers/HelperErrorCatch";
 
 
 export interface stateProps {
@@ -17,6 +17,7 @@ export interface stateProps {
     checkedCount: number[]
     packName: null | string
     cardPacksTotalCount: number | null
+    sortArrow: SortArrowValues | null
 }
 
 
@@ -31,7 +32,8 @@ const initialState: stateProps = {
     cardPacksTotalCount: null,
     cardsCount: {minCardsCount: 0, maxCardsCount: 50},
     checkedCount:[0, 50],
-    packName: null
+    packName: null,
+    sortArrow: null
 }
 
 
@@ -47,9 +49,14 @@ export enum ActionType {
     SET_PACKS_TOTAL_COUNT = "PACKS/SET_PACKS_TOTAL_COUNT",
     SET_PACK_NAME = "SET/PACK_NAME",
     SET_COUNT_RENGE = "SET/COUNT_RENGE",
-    SET_CARDS_COUNT = "SET/CARDS_COUNT"
+    SET_CARDS_COUNT = "SET/CARDS_COUNT",
+    SET_SORT_ARROW = "SET_SORT_ARROW"
 }
+export enum SortArrowValues {
+    SORT_UP = "0cardsCount",
+    SORT_DOWN = "1cardsCount"
 
+}
 
 //actions
 
@@ -108,6 +115,10 @@ export const setCheckedCount = (count: Array<number> | number) => ({
     type: ActionType.SET_COUNT_RENGE,
     payload: count
 })
+export const setSortArrow= (sortValue: SortArrowValues) => ({
+    type: ActionType.SET_SORT_ARROW,
+    payload: sortValue
+})
 
  const setCardsCount = (minCardsCount: number,  maxCardsCount: number) => ({
     type: ActionType.SET_CARDS_COUNT,
@@ -129,9 +140,9 @@ export const getPacksThunk = (pageSize: number, currentPage: number, user_id?: s
     const minCheckedCount = getState().packsPage.checkedCount[0]
     const maxCheckedCount = getState().packsPage.checkedCount[1]
     const packName = getState().packsPage.packName
-
     const value = getState().packsPage.checkedCount
-        ApiPack.getCardPacks(pageSize, currentPage, user_id, minCheckedCount, maxCheckedCount, packName || undefined)
+    const sortPacks = getState().packsPage.sortArrow
+        ApiPack.getCardPacks(pageSize, currentPage, user_id, minCheckedCount, maxCheckedCount, packName || undefined, sortPacks || undefined)
             .then(res => {
                 dispatch(isDisabled(false))
                 dispatch(setTotalCount(res.data.cardPacksTotalCount))
@@ -143,7 +154,7 @@ export const getPacksThunk = (pageSize: number, currentPage: number, user_id?: s
                 dispatch(setStatus('succeeded'))
             })
             .catch(e => {
-                UseErrorCatch(e, dispatch)
+                HelperErrorCatch(e, dispatch)
             })
             .finally(() => {
                 dispatch(setStatus('succeeded'))
@@ -168,7 +179,7 @@ export const addPacksThunk = (name:string) =>
 
             })
             .catch(e => {
-                UseErrorCatch(e, dispatch)
+                HelperErrorCatch(e, dispatch)
             })
 
 
@@ -191,7 +202,7 @@ export const deletePackThunk = (_id: string) =>
                 }
             })
             .catch(e => {
-                UseErrorCatch(e, dispatch)
+                HelperErrorCatch(e, dispatch)
             })
     }
 
@@ -212,7 +223,7 @@ export const onChangeNamePackThunk = ( _id: string, name: string) =>
 
             })
             .catch(e => {
-                UseErrorCatch(e, dispatch)
+                HelperErrorCatch(e, dispatch)
         })
     }
 
@@ -258,6 +269,8 @@ const PacksPageReducer = (state: stateProps = initialState, action: Action<Respo
             return {...state,cardsCount: action.payload}
         case ActionType.SET_PACKS_TOTAL_COUNT:
             return {...state, cardPacksTotalCount: action.payload}
+        case ActionType.SET_SORT_ARROW:
+            return {...state, sortArrow: action.payload}
         default:
             return state
     }
@@ -265,7 +278,7 @@ const PacksPageReducer = (state: stateProps = initialState, action: Action<Respo
 }
 
 
-type TypeActions = ReturnType<typeof getPacks> | ReturnType<typeof setStatus>
+export type TypeActions = ReturnType<typeof getPacks> | ReturnType<typeof setStatus>
     | ReturnType<typeof setError> | ReturnType<typeof isDisabled> | ReturnType<typeof setPackName> | ReturnType<typeof setCheckedCount>
 | ReturnType<typeof setCardsCount>
     | ReturnType<typeof setError> | ReturnType<typeof isDisabled> | ReturnType<typeof setCurrentPageAC>| ReturnType<typeof setTotalCount>

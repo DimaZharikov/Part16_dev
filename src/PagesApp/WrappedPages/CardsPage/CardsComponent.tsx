@@ -2,7 +2,7 @@ import React, {FC, Fragment} from "react";
 import {ResponseTypeCardsData} from "../../../API/Api";
 import TableItem from "../../../Components/TableWrapper/TableIttem/TableItem";
 
-import ChangeName from "../PacksPage/ChengeNameInput";
+import ChangeName from "../PacksPage/ChangeNameInput";
 import DeleteModal from "../../../Components/Modal/DeleteModal/DeleteModal";
 
 interface Props {

@@ -2,7 +2,7 @@ import React, {FC} from "react";
 import {ResponseTypeCardsPacksData} from "../../../API/Api";
 import style from './Packs.module.scss'
 import {useDispatch} from "react-redux";
-import ChangeName from "./ChengeNameInput";
+import ChangeName from "./ChangeNameInput";
 import {NavLink} from "react-router-dom";
 import TableItem from "../../../Components/TableWrapper/TableIttem/TableItem";
 import {onChangeNamePackThunk} from "../../../Redux/PacksPageReducer/PacksPageReducer";
