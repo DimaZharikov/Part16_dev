@@ -5,65 +5,14 @@ import {SortArrowValues} from "../Redux/PacksPageReducer/PacksPageReducer";
 //first deploy at 10.02.21
 const configOMB = {
     // localBack
-    // baseURL: "http://localhost:7542/2.0/",
+    baseURL: "http://localhost:7542/2.0/",
     // heroku
-    baseURL: 'https://neko-back.herokuapp.com/2.0',
+    // baseURL: 'https://neko-back.herokuapp.com/2.0',
     withCredentials: true,
 
 };
 
 const axiosInstance = axios.create(configOMB);
-export type ResponseTypeProfile = {
-    _id: string;
-    email: string;
-    name: string;
-    avatar?: string;
-    publicCardPacksCount: number; // количество колод
-    created: Date;
-    updated: Date;
-    isAdmin: boolean;
-    verified: boolean; // подтвердил ли почту
-    rememberMe: boolean;
-    token: string
-}
-
-export type ResponseTypeLogOut = {
-    info: string
-    error: string;
-}
-
-export type ResponseTypeRegistration = {
-    email: string,
-    password: string,
-    error?: string | undefined
-}
-
-
-export interface ResponseTypeCardsPacksData  {
-    _id: string,
-    userId: string,
-    name: string,
-    path: '/def',
-    cardsCount: number,
-    grade: number,
-    shots: number,
-    rating: number,
-    type: 'pack' | 'folder',
-    created: Date;
-    updated: Date;
-
-}
-
-export interface ResponseTypeCardsPacks {
-    cardPacks: Array<ResponseTypeCardsPacksData>,
-    page: number
-    pageCount: number
-    cardPacksTotalCount: number
-    minCardsCount: number
-    maxCardsCount: number
-    token: string
-    tokenDeathTime: number
-}
 
 
 export const ApiAuth = {
@@ -122,6 +71,85 @@ export const ApiPack = {
 }
 
 
+
+
+
+
+export const ApiCards = {
+    getCards(cardsPack_id: string, pageCount: number, page: number,) {
+        return axiosInstance.get<ResponseTypeCardsType>("cards/card", {params: {cardsPack_id, page, pageCount}})
+    },
+    addCards(cardsPack_id: string, question: string) {
+        return axiosInstance.post<ResponseTypeCardsData>("cards/card", {card: {cardsPack_id, question}})
+    },
+    deleteCards(id: string) {
+        return axiosInstance.delete<ResponseTypeCardsData>("cards/card", {params: {id}})
+    },
+    putCards(_id: string, question: string){
+        return axiosInstance.put<ResponseTypeCardsData>("cards/card", {card: {_id, question}})
+    },
+}
+
+
+export const ApiCardsGrade = {
+    putCardsGrade(card_id: string, grade?: number) {
+        return axiosInstance.put <ResponseTypeCardsGradeType>(` cards/grade`, {updatedGrade: {grade,card_id}})
+    }
+}
+
+
+export type ResponseTypeProfile = {
+    _id: string;
+    email: string;
+    name: string;
+    avatar?: string;
+    publicCardPacksCount: number; // количество колод
+    created: Date;
+    updated: Date;
+    isAdmin: boolean;
+    verified: boolean; // подтвердил ли почту
+    rememberMe: boolean;
+    token: string
+}
+
+export type ResponseTypeLogOut = {
+    info: string
+    error: string;
+}
+
+export type ResponseTypeRegistration = {
+    email: string,
+    password: string,
+    error?: string | undefined
+}
+
+
+export interface ResponseTypeCardsPacksData  {
+    _id: string,
+    userId: string,
+    name: string,
+    path: '/def',
+    cardsCount: number,
+    grade: number,
+    shots: number,
+    rating: number,
+    type: 'pack' | 'folder',
+    created: Date;
+    updated: Date;
+
+}
+
+export interface ResponseTypeCardsPacks {
+    cardPacks: Array<ResponseTypeCardsPacksData>,
+    page: number
+    pageCount: number
+    cardPacksTotalCount: number
+    minCardsCount: number
+    maxCardsCount: number
+    token: string
+    tokenDeathTime: number
+}
+
 export interface ResponseTypeCardsData {
     answer: string
     question: string
@@ -148,18 +176,15 @@ export interface ResponseTypeCardsType {
     packUserId: string
 }
 
-export const ApiCards = {
-    getCards(cardsPack_id: string, pageCount: number, page: number,) {
-        return axiosInstance.get<ResponseTypeCardsType>("cards/card", {params: {cardsPack_id, page, pageCount}})
-    },
-    addCards(cardsPack_id: string, question: string) {
-        return axiosInstance.post<ResponseTypeCardsData>("cards/card", {card: {cardsPack_id, question}})
-    },
-    deleteCards(id: string) {
-        return axiosInstance.delete<ResponseTypeCardsData>("cards/card", {params: {id}})
-    },
-    putCards(_id: string, question: string){
-        return axiosInstance.put<ResponseTypeCardsData>("cards/card", {card: {_id, question}})
-    }
+
+export interface ResponseTypeCardsGradeType {
+
+        _id: string
+        cardsPack_id: string
+        card_id: string
+        user_id: string
+        grade: number
+        shots: number
 
 }
+

@@ -2,6 +2,7 @@ import {FC} from "react";
 
 import {NavLink} from "react-router-dom";
 import {RoutingType} from "../../../Routes/Routes";
+import style from "./NavigationContainer.module.scss";
 
 
 const NavigationComponent : FC= ({
@@ -41,6 +42,11 @@ const NavigationComponent : FC= ({
         <div>
             <NavLink to={RoutingType.resPass}>
                 <h3>Reset Password</h3>
+            </NavLink>
+        </div>
+        <div>
+            <NavLink to={RoutingType.packs}>
+                <h3>Page of Packs</h3>
             </NavLink>
         </div>
         <div>

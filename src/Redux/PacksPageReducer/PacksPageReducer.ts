@@ -6,7 +6,7 @@ import HelperErrorCatch from "../../Utils/Helpers/HelperErrorCatch";
 
 
 export interface stateProps {
-    cardPacks: ResponseTypeCardsPacksData[] | null    
+    cardPacks: ResponseTypeCardsPacksData[] | null
     error: string | undefined
     status: RequestStatusType,
     isDisabled: boolean,
@@ -50,7 +50,8 @@ export enum ActionType {
     SET_PACK_NAME = "SET/PACK_NAME",
     SET_COUNT_RENGE = "SET/COUNT_RENGE",
     SET_CARDS_COUNT = "SET/CARDS_COUNT",
-    SET_SORT_ARROW = "SET_SORT_ARROW"
+    SET_SORT_ARROW = "SET_SORT_ARROW",
+
 }
 export enum SortArrowValues {
     SORT_UP = "0cardsCount",
@@ -127,6 +128,9 @@ export const setSortArrow= (sortValue: SortArrowValues) => ({
         maxCardsCount: maxCardsCount
     }
 })
+
+
+
 
 
 
