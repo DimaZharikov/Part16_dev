@@ -1,24 +1,26 @@
-
-import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../../Redux/Store";
-import {ResponseTypeCardsGradeType} from "../../../API/Api";
-
 import {FC, useEffect} from "react";
-import {getCardsGrade} from "../../../Redux/CardsGrade.reducer";
+import {useDispatch, useSelector} from "react-redux";
 import {useParams} from "react-router-dom";
+import {getCardsLearnThunk} from "../../../Redux/CardsGrade.reducer";
+import {AppRootStateType} from "../../../Redux/Store";
+import {ResponseTypeCardsData} from "../../../API/Api";
+import LearnComponent from "./LearnComponent";
 
 
 const PageLearnContainer : FC = ()  => {
-    const CardsGrade = useSelector<AppRootStateType, ResponseTypeCardsGradeType | null>(state => state.cardsGrade.date);
-
 
     const dispatch = useDispatch()
+    const data = useSelector<AppRootStateType, Array<ResponseTypeCardsData> | null>( state => state.cardsGrade.cards)
     const {id} = useParams<{ id: string }>()
-    useEffect(()=> {
-        dispatch(getCardsGrade(id, CardsGrade?.grade))
-    },[])
+
+
+    useEffect(() => {
+        dispatch(getCardsLearnThunk(id))
+    }, [])
+
+
     return <div>
-        <h1>{CardsGrade?.shots}</h1>
+      <LearnComponent data = {data}/>
     </div>
 }
 

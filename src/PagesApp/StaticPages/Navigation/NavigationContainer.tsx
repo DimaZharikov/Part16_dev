@@ -32,9 +32,7 @@ const NavigationContainer: FC = () => {
             <NavLink to={RoutingType.packs} activeClassName={style.active}>
                 Page of Packs
             </NavLink>
-            <NavLink to={RoutingType.cards_Grade} activeClassName={style.active}>
-                Page of Learn
-            </NavLink>
+
         </div>
 
 

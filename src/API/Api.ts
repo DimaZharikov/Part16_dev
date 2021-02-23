@@ -7,7 +7,7 @@ const configOMB = {
     // localBack
     baseURL: "http://localhost:7542/2.0/",
     // heroku
-    // baseURL: 'https://neko-back.herokuapp.com/2.0',
+    //baseURL: 'https://neko-back.herokuapp.com/2.0',
     withCredentials: true,
 
 };
@@ -66,7 +66,8 @@ export const ApiPack = {
     },
     putCardPack(body: { _id: string, name: string }) {
         return axiosInstance.put<ResponseTypeCardsPacksData>(`cards/pack`, {cardsPack: body})
-    }
+    },
+
 
 }
 
@@ -88,14 +89,18 @@ export const ApiCards = {
     putCards(_id: string, question: string){
         return axiosInstance.put<ResponseTypeCardsData>("cards/card", {card: {_id, question}})
     },
+
 }
 
-
-export const ApiCardsGrade = {
-    putCardsGrade(card_id: string, grade?: number) {
-        return axiosInstance.put <ResponseTypeCardsGradeType>(` cards/grade`, {updatedGrade: {grade,card_id}})
+export const ApiLearn = {
+    getCardsLearn(cardsPack_id : string) {
+        return axiosInstance.get<ResponseTypeCardsType>("cards/card", {params: {cardsPack_id}})
     }
 }
+
+
+
+
 
 
 export type ResponseTypeProfile = {

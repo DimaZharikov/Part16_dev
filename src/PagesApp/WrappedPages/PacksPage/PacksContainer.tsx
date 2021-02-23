@@ -21,6 +21,7 @@ import SuperInputText from "../../../Components/c1-SuperInputText/SuperInputText
 import {RangeSlider} from "./AddNewPack/Slider/Slider";
 import SuperButton from "../../../Components/c2-SuperButton/SuperButton";
 import {HelpersGet} from "../../../Utils/Helpers/HelpersGet";
+import {getCardsThunk} from "../../../Redux/CardsReducer/CardsReducer";
 
 
 interface Props {
@@ -75,6 +76,8 @@ const PacksContainer: FC<Props> = () => {
         HelpersGet(isPrivat, dispatch,pageSize, currentPage, userId )
     }
 
+
+  
     if (!isLogin || !profile) {
         return <Redirect to={'/auth'}/>
     }
