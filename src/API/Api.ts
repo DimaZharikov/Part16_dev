@@ -95,7 +95,7 @@ export const ApiAuth = {
     }
 
 
-    }
+}
 
 
 export const ApiRegistration = {
