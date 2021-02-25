@@ -87,7 +87,6 @@ export const getCardsThunk = (cardsPack_id: string, pageSize?: number, currentPa
             console.log('cards:', res)
             dispatch(setTotalCountCard(res.data.cardsTotalCount))
             dispatch(setCards(res.data.cards))
-            dispatch(setStatus('succeeded'))
         })
         .catch((e) => {
             HelperErrorCatch(e, dispatch)
@@ -146,6 +145,7 @@ export const onChangeGrade = (card_id:string, grade:number) => (dispatch:ThunkDi
     ApiCards.setGrade(card_id, grade)
         .then(res => {
             console.log(res)
+            dispatch(setStatus('succeeded'))
             dispatch(setUpdateGrade(res.data.updatedGrade.card_id, res.data.updatedGrade.grade, res.data.updatedGrade.shots))
         })
         .catch(e => {
