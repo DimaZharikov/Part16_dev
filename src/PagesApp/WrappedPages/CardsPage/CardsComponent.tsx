@@ -9,9 +9,10 @@ interface Props {
     cards: ResponseTypeCardsData,
     onDeleteCard: (id: string) => void
     onChangeNameQuestion: (cardId: string,question:string) => void
+    disabled?: boolean
 }
 
-const CardsComponent: FC <Props> = ({ cards, onDeleteCard, onChangeNameQuestion
+const CardsComponent: FC <Props> = ({ cards, onDeleteCard, onChangeNameQuestion, disabled
 
 }) => {
 
@@ -19,10 +20,11 @@ const CardsComponent: FC <Props> = ({ cards, onDeleteCard, onChangeNameQuestion
     return (<Fragment>
         <TableItem name1={cards.question} name2={cards.rating} name3={cards.updated}>
 
-            <DeleteModal id={cards._id} onDeleteCard={onDeleteCard}/>
+            <DeleteModal id={cards._id} onDeleteCard={onDeleteCard} disabled={disabled}/>
             <ChangeName namePack={cards.question}
                         cardsPack_id={cards._id}
                         onChangeName = {onChangeNameQuestion}
+                        disabled={disabled}
             />
         </TableItem>
 

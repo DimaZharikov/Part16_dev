@@ -67,6 +67,7 @@ export const setLoginT = (email: string, password: string, rememberMe: boolean):
             console.log(error)
             console.log('Error:', {...e})
             dispatch(setErrorMes(error))
+            dispatch(setLoginAC(false))
             dispatch(setStatusAC('failed'))
         })
 }
@@ -126,6 +127,7 @@ export const setChangeName = (name: string): AppThunk => (dispatch) => {
                 : (e.message + ', more details in the console');
             console.log(error)
             dispatch(setErrorMes(error))
+            dispatch(setLoginAC(false))
             console.log('Error:', {...e})
             dispatch(setStatusAC('failed'))
         })

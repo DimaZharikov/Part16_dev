@@ -41,7 +41,6 @@ const PacksContainer: FC<Props> = () => {
     const totalCount = useSelector((state: AppRootStateType) => state.packsPage.cardPacksTotalCount)
 
     useEffect(() => {
-
         if (!isLogin) {
             return
         }
@@ -81,7 +80,7 @@ const PacksContainer: FC<Props> = () => {
     return (
         <div className={style.main_wrapp}>
             <div className={style.setting_wrapp}>
-                <div><SuperCheckbox onChangeChecked={setIsPrivatHandler}>is Privat</SuperCheckbox></div>
+                <div><SuperCheckbox onChangeChecked={setIsPrivatHandler}>My packs</SuperCheckbox></div>
                 <div className={style.input_style}>
                     Search:
                     <SuperInputText onChangeText={setPackNameHandler} placeholder={'Pack name'}/>

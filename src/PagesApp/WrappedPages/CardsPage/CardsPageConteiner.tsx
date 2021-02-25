@@ -31,15 +31,16 @@ const CardsPageContainer: FC<Props> = ({...props}) => {
     const error = useSelector<AppRootStateType, string | null> (state => state.cardsPage.error)
     const pageSize = useSelector((state: AppRootStateType) => state.cardsPage.pageSize)
     const currentPage= useSelector((state: AppRootStateType) => state.cardsPage.pageCurrent)
+    const userId = useSelector((state: AppRootStateType) => state.profile.profile?._id)
     // cardsId - params from route for get Id from params
     const {cardId} = useParams<{ cardId: string }>()
     const dispatch = useDispatch()
     useEffect(() => {
-        dispatch(getCardsThunk(pageSize, currentPage, cardId))
+        dispatch(getCardsThunk(cardId, pageSize, currentPage))
     }, [pageSize, currentPage])
 
 
-console.log(status, error)
+
 
 
 
@@ -63,12 +64,13 @@ console.log(status, error)
 
     return (<div>
                 <div>{error}</div>
-        <TableWrapper onClickHandler={onAddCard} title1={'Name'} title2={'Rating'} title3={'Updated'}>
+        <TableWrapper onClickHandler={onAddCard} title1={'Name'} title2={'Rating'} title3={'Updated'} disabled={ !!cards?.find(item => item.user_id !== userId) || status === "loading"}>
             { status === "loading"? <Spinner /> : cards ?
                 cards?.map((item, inx) => {
                     return (<CardsComponent key={cardId + inx} cards={item}
                                             onDeleteCard = {onDeleteCard}
                                             onChangeNameQuestion = {onChangeNameQuestion}
+                                            disabled={userId !== item.user_id}
                     />)
 
                 }) : null

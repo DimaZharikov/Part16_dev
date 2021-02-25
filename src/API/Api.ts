@@ -41,7 +41,7 @@ export type ResponseTypeRegistration = {
 
 export interface ResponseTypeCardsPacksData  {
     _id: string,
-    userId: string,
+    user_id: string,
     name: string,
     path: '/def',
     cardsCount: number,
@@ -130,10 +130,10 @@ export interface ResponseTypeCardsData {
     rating: number
     shots: number
     type: string
-    user_id: number
+    user_id?: string
     created: string
-    updated: Date
-    __v: number
+    updated?: Date
+    __v?: number
     _id: string
 }
 
@@ -149,7 +149,7 @@ export interface ResponseTypeCardsType {
 }
 
 export const ApiCards = {
-    getCards(cardsPack_id: string, pageCount: number, page: number,) {
+    getCards(cardsPack_id: string, pageCount?: number, page?: number,) {
         return axiosInstance.get<ResponseTypeCardsType>("cards/card", {params: {cardsPack_id, page, pageCount}})
     },
     addCards(cardsPack_id: string, question: string) {
@@ -160,6 +160,9 @@ export const ApiCards = {
     },
     putCards(_id: string, question: string){
         return axiosInstance.put<ResponseTypeCardsData>("cards/card", {card: {_id, question}})
+    },
+    setGrade(card_id:string, grade:number) {
+        return axiosInstance.put('cards/grade', {card_id, grade})
     }
 
 }
