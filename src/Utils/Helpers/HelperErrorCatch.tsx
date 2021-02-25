@@ -2,6 +2,7 @@
 import {setError, setStatus} from "../../Redux/PacksPageReducer/PacksPageReducer";
 
 import {Dispatch} from "react";
+import {setLoginAC} from "../../Redux/AuthReducer/AuthReducer";
 
 const HelperErrorCatch = (e:any, dispatch: Dispatch<any>) => {
 
@@ -12,7 +13,7 @@ const HelperErrorCatch = (e:any, dispatch: Dispatch<any>) => {
     console.log('errors:', {...e})
     dispatch(setError(error))
     dispatch(setStatus('failed'))
-
+    dispatch(setLoginAC(false))
 
 };
 
