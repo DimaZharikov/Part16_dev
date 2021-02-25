@@ -7,9 +7,10 @@ import style from './DeleteModal.module.scss'
 interface Props {
     onDeleteCard: (id: string) => void
     id: string
+    disabled?:boolean
 }
 
-const DeleteModal:FC<Props> = ({id,onDeleteCard}) => {
+const DeleteModal:FC<Props> = ({id,onDeleteCard, disabled}) => {
 
     const [modal, setModal] = useState<boolean>(false)
 
@@ -17,7 +18,7 @@ const DeleteModal:FC<Props> = ({id,onDeleteCard}) => {
 
     return (
         <>
-            <SuperButton onClick={() => setModal(true)} className='btn_table'>del</SuperButton>
+            <SuperButton disabled={disabled} onClick={() => setModal(true)} className='btn_table'>del</SuperButton>
             <Modal setModal={setModal} modal={modal}>
                 <div className={style.delete_modal_wrapper}>
                     <h1 className={style.delete_modal_title}>Are you sure you want to delete it?</h1>

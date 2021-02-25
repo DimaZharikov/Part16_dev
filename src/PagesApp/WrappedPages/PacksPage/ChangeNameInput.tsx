@@ -8,9 +8,10 @@ interface Props {
     namePack: string,
     cardsPack_id: string,
     onChangeName: (id: string, name:string) => void
+    disabled?: boolean
 }
 
-const ChangeName: FC<Props> = ({cardsPack_id, namePack, errorMes,onChangeName
+const ChangeName: FC<Props> = ({cardsPack_id, namePack, errorMes,onChangeName,disabled
                                    }) => {
 
     const [name, setName] = useState<string>(namePack)
@@ -24,7 +25,7 @@ const ChangeName: FC<Props> = ({cardsPack_id, namePack, errorMes,onChangeName
     }
     return (
         <>
-            <SuperButton onClick={() => setModal(true)} className='btn_table'>Change name</SuperButton>
+            <SuperButton disabled={disabled} onClick={() => setModal(true)} className='btn_table'>Change name</SuperButton>
             <Modal
                 modal={modal}
                 setModal={setModal}
