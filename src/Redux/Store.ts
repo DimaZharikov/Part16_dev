@@ -12,7 +12,6 @@ import {AppReducer, AppType } from './AppReducer/AppReducer';
 import {composeWithDevTools} from 'redux-devtools-extension'
 import PacksPageReducer from "./PacksPageReducer/PacksPageReducer";
 import CardsReducer from "./CardsReducer/CardsReducer";
-import CardsGradeReducer from "./CardsGrade.reducer";
 
 
 const reducer = combineReducers({
@@ -25,7 +24,7 @@ const reducer = combineReducers({
     app: AppReducer,
     packsPage: PacksPageReducer,
     cardsPage: CardsReducer,
-    cardsGrade: CardsGradeReducer
+
 
 })
 
